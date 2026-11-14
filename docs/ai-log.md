@@ -248,5 +248,12 @@ Steg för steg i `docs/publishing.md`: kontroll före publicering, skapa repot (
 
 ### Kvar för dig att avgöra
 - "coins" och "XP": svenska ord eller `lang="en"`?
-- Ska jag publicera (skapa repot och slå på Pages), eller gör du det själv med guiden?
+- ~~Ska jag publicera?~~ Publicerat 2026-11-14, se nedan.
 - Ska offline-stöd (service worker) byggas innan appen används på riktigt?
+
+### Publicerat (2026-11-14)
+- Repo: https://github.com/the-big-dabrowski/kvackademin (publikt), skapat via github.com i webbläsarpanelen.
+- `main` pushad. GitHub Pages bygger från `main` / root, HTTPS påtvingat.
+- Live: https://the-big-dabrowski.github.io/kvackademin/
+- Kontrollerat på live-adressen: sidan, CSS, JS, data, manifest, logo och fonter svarar 200. Säker kontext (HTTPS) och SubtleCrypto finns. Inga konsolfel. Uppdragslistan laddar alla tre uppdrag.
+- Kvar: checklistan i `docs/publishing.md` på iPhone (VoiceOver, delning, uppläsning, export, zoom, liggande läge).
