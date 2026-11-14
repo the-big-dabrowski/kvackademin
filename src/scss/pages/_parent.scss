@@ -1,0 +1,25 @@
+@use "../abstracts" as *;
+
+.parent {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr);
+  gap: var(--space-4);
+  justify-items: start;
+}
+
+.parent > * {
+  max-width: 100%;
+}
+
+.parent__stats {
+  padding-left: var(--space-5);
+  font-weight: 700;
+}
+
+.parent__help summary {
+  @include touch-target;
+  display: flex;
+  align-items: center;
+  cursor: pointer;
+  text-decoration: underline;
+}
