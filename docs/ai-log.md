@@ -44,11 +44,11 @@ En post per fas: vad AI:n föreslog, vilka alternativ som fanns och vad som är 
 - Saknad Förälder-vy och vynamn enligt CLAUDE.md.
 
 **Kvar att avgöra eller testa:**
-- `.u-visually-hidden` är en hjälpklass, inte BEM. Vanlig konvention, men avviker från regeln.
+- `.u-visually-hidden` är en hjälpklass, inte BEM. Beslut: behålls.
 - ~~Vägarna är på svenska~~ Åtgärdat: `#/missions` och `#/parent`.
 - Färgerna är valda utifrån beskrivningen "blått, grönt, guld, pergament". Ingen mood board än; färgerna behålls.
 - ~~Git-författaren är ditt fullständiga namn~~ Åtgärdat: se uppföljning nedan.
-- Lighthouse och VoiceOver på riktig iPhone är inte körda.
+- Lighthouse och VoiceOver på riktig iPhone testas efter publicering (Fas 5).
 - Ingen service worker än, så appen fungerar inte offline.
 
 ### Uppmätt kontrast
@@ -68,5 +68,5 @@ UI-kanter: 4.8 (kant/pergament), 6.9 (blå knapp/pergament), 13.1 (fokusring).
 - **Färger:** behålls. Alla färger finns som tokens i `src/scss/abstracts/_tokens.scss`, så en ny palett är en ändring i en fil. Kontrasten måste kontrolleras igen efter ändring.
 
 **Kvar för dig att avgöra:**
-- GitHub rekommenderar noreply-adressen med ditt användar-ID (`ID+användarnamn@users.noreply.github.com`, finns under Settings → Emails). Den nuvarande adressen utan ID fungerar men kopplas inte alltid till ditt konto.
+- ~~Noreply-adress med användar-ID~~ Åtgärdat: repot använder nu GitHub-adressen med ID, och alla commits är omskrivna.
 - Användarnamnet `the-big-dabrowski` syns ändå i repo-URL:en och i CLAUDE.md.
