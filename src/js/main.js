@@ -3,6 +3,7 @@ import { requestPersistence } from './core/storage.js';
 import { todayView } from './views/today.js';
 import { missionsView } from './views/missions.js';
 import { parentView } from './views/parent.js';
+import { reportView } from './views/report.js';
 import { notFoundView } from './views/not-found.js';
 
 import { missionView } from './views/mission.js';
@@ -18,6 +19,7 @@ router.addRoute('/', todayView);
 router.addRoute('/missions', missionsView);
 router.addRoute('/missions/:id', missionView);
 router.addRoute('/parent', parentView);
+router.addRoute('/report', reportView);
 router.setNotFound(notFoundView);
 
 // Skip link: move focus to the content without changing the hash (the router owns the hash).
