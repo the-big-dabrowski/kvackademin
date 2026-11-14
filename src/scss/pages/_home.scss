@@ -1,0 +1,18 @@
+@use "../abstracts" as *;
+
+.home {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr);
+  gap: var(--space-5);
+}
+
+.home__mascot {
+  width: 7rem;
+  height: 7rem;
+  margin-inline: auto;
+  image-rendering: pixelated;
+}
+
+.home__lead {
+  color: var(--color-text-muted);
+}

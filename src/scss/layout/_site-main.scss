@@ -1,0 +1,16 @@
+@use "../abstracts" as *;
+
+.site-main {
+  max-width: var(--content-width);
+  margin-inline: auto;
+  padding: var(--space-5) var(--space-4);
+  padding-bottom: max(var(--space-6), env(safe-area-inset-bottom));
+
+  @include from("md") {
+    padding-block: var(--space-7);
+  }
+}
+
+.site-main:focus {
+  outline: none;
+}

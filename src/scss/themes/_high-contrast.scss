@@ -1,0 +1,7 @@
+// Förstärkt kontrast när användaren ber om det i systemet.
+@media (prefers-contrast: more) {
+  :root {
+    --color-text-muted: var(--color-text);
+    --color-border: var(--color-text);
+  }
+}

@@ -1,0 +1,8 @@
+@use "../abstracts" as *;
+
+// Generisk vy (t.ex. 404 och platshållare).
+.page {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr);
+  gap: var(--space-5);
+}

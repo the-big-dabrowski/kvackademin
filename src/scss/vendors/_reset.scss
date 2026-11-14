@@ -1,0 +1,41 @@
+// Minimal modern reset (egen, inga externa beroenden).
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
+* {
+  margin: 0;
+}
+
+html {
+  -webkit-text-size-adjust: 100%;
+  text-size-adjust: 100%;
+}
+
+img,
+svg {
+  display: block;
+  max-width: 100%;
+}
+
+input,
+button,
+textarea,
+select {
+  font: inherit;
+  color: inherit;
+}
+
+p {
+  overflow-wrap: break-word;
+}
+
+// Långa ord i stora rubriker får brytas vid stark zoom (1.4.10).
+h1,
+h2,
+h3 {
+  overflow-wrap: anywhere;
+  hyphens: auto;
+}

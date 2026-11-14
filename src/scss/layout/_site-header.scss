@@ -1,0 +1,27 @@
+@use "../abstracts" as *;
+
+.site-header {
+  background-color: var(--color-panel);
+  border-bottom: var(--border-width) solid var(--color-border);
+  padding: var(--space-2) var(--space-4);
+  padding-top: max(var(--space-2), env(safe-area-inset-top));
+}
+
+.site-header__inner {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--space-4);
+  max-width: var(--content-width);
+  margin-inline: auto;
+}
+
+// Sticky bara när skärmen är tillräckligt hög, så att headern aldrig
+// döljer fokuserat innehåll vid stark zoom (2.4.11).
+@media (min-height: 30em) {
+  .site-header {
+    position: sticky;
+    top: 0;
+    z-index: 10;
+  }
+}

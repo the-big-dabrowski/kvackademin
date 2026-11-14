@@ -1,0 +1,18 @@
+@use "../abstracts" as *;
+
+// Text ligger alltid på solid panel.
+.panel {
+  background-color: var(--color-panel);
+  border: var(--border-width) solid var(--color-border);
+  border-radius: var(--radius);
+  box-shadow: var(--shadow-pixel);
+  padding: var(--space-5) var(--space-4);
+
+  @include from("sm") {
+    padding: var(--space-6);
+  }
+}
+
+.panel > * + * {
+  margin-top: var(--space-4);
+}

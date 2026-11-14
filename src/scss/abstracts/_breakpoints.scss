@@ -1,0 +1,13 @@
+@use "sass:map";
+
+$breakpoints: (
+  "sm": 30em,
+  "md": 48em,
+);
+
+// Mobile first: stilar utan media query gäller minsta skärmen.
+@mixin from($name) {
+  @media (min-width: map.get($breakpoints, $name)) {
+    @content;
+  }
+}
