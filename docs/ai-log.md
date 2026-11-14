@@ -70,3 +70,46 @@ UI-kanter: 4.8 (kant/pergament), 6.9 (blå knapp/pergament), 13.1 (fokusring).
 **Kvar för dig att avgöra:**
 - ~~Noreply-adress med användar-ID~~ Åtgärdat: repot använder nu GitHub-adressen med ID, och alla commits är omskrivna.
 - Användarnamnet `the-big-dabrowski` syns ändå i repo-URL:en och i CLAUDE.md.
+
+---
+
+## Fas 2 – Kortlek och prov (2026-11-14)
+
+### Vad som byggdes
+- `engines/flashcards.js`: Leitner med 3 lådor och båda riktningarna. "Kunde" flyttar upp en låda, "Inte än" flyttar till låda 1. Rena funktioner utan DOM och storage, med 6 enhetstester (`npm test`).
+- `modules/exam.js`: ett prov per datafil. Räknar dagar kvar till provdatum och föreslår dagens pass på ungefär 10 minuter (20 kort à 30 s).
+- `views/exam-session.js`: intro → ett kort i taget → klart. Autosave efter varje svar, återupptagning, timer som räknar uppåt med pausförslag efter 20 min, knapp för att pausa och spara.
+- `views/mission.js` och vägen `#/missions/:id`: slår upp dagens uppdrag och lämnar det till modulens vy.
+- "Uppdrag" listar dagens uppdrag med status i text. "Starta dagens uppdrag" går direkt till första ofärdiga uppdraget.
+- `lib/speech.js`: valfri uppläsning med knappen "Lyssna" (`en-GB` för engelska, `sv-SE` för svenska).
+- Exempeldata: `exam-english-w47.json` (10 höstglosor) och `exam-biology.json` (5 exempelbegrepp, `"placeholder": true`). Båda har provdatum `PLACEHOLDER`.
+- Routern kör nu en `cleanup()` från vyn innan nästa vy visas (stoppar timern och sparar).
+
+### Val och alternativ
+| Beslut | Valt | Alternativ | Varför |
+|---|---|---|---|
+| Svarssätt | Vänd kortet och bedöm själv ("Ja, jag kunde det" / "Inte än") | Skriva svaret | Lägst tröskel att komma igång, fungerar för både glosor och begrepp med långa förklaringar, och inga stavningsfällor. |
+| Nytt försök vid "Inte än" | Kortet kommer tillbaka 3 kort senare, högst 2 gånger per pass | Direkt igen / aldrig i samma pass | Ger ett nytt försök utan att fastna på samma kort. |
+| Räknare | "Kort 3 av 20", omförsök visas som "Nytt försök" | Total som växer vid omförsök | Passet ska aldrig se ut att bli längre. |
+| Repetitionsintervall | Låda 1 varje dag, låda 2 varannan, låda 3 var 4:e dag. Från 2 dagar före provet: allt som inte övats idag | Fast schema | Enkel Leitner som ändå trappar upp inför provet. |
+| Ordning | Lägsta lådan först, aldrig samma kort i båda riktningarna direkt efter varandra | Slumpad | Förutsägbart och testbart. |
+| Provdatum `PLACEHOLDER` | Visas som "Provdatum är inte bestämt än" och uppdraget finns ändå | Dölja uppdraget | Går att öva innan datumet är inlagt. |
+| Uppdrag per dag | Ett uppdrag per prov och dag (`exam-<id>-<datum>`) | Ett uppdrag per prov totalt | Passar livscykeln start → in progress → done per dag. Leitner-lådorna sparas separat. |
+| Feedback | Kvackis i en synlig ruta ovanför kortet, samma ruta är `aria-live="polite"` | Bara för skärmläsare | Alla ser feedbacken direkt. |
+| Uppläsning | `src/js/lib/speech.js` | Lägga i `core/` | Inte en del av core-listan i CLAUDE.md. |
+| Slutskärm | Visar antal övade kort, aldrig antal rätt | Visa resultat | Följer principen om ansträngning, inte antal rätt. |
+
+### Testat
+- `npm test`: 6 av 6 godkända (lådor, intervall, urval, omförsök).
+- Hela flödet i webbläsaren: Idag → första kortet → "Inte än" → omförsök → klart. Loggen fick 1 start, 21 progress och 1 done.
+- Återupptagning efter omladdning och efter att man lämnat vyn mitt i ett pass.
+- Pausförslaget visas efter 20 min (simulerat).
+- axe: 0 fel på Idag, Uppdrag, intro, kort, visat svar och slutskärm.
+- Tangentbord: Tab till "Visa svaret", fokus flyttas till svaret och sedan till nästa kort.
+- 320 px bredd: ingen horisontell scroll. `npm run validate`: 0 fel.
+
+### Kvar för dig att avgöra
+- Riktiga provdatum (`examDate` i formatet `ÅÅÅÅ-MM-DD`) och riktiga biologibegrepp.
+- Är självbedömning rätt, eller vill du ha ett skrivläge för glosor (stavning) som tillval?
+- Är 10 minuter och 20 kort lagom? Värdet ändras i `SESSION_MINUTES` i `modules/exam.js`.
+- Uppläsningen beror på vilka röster som finns i iPhonen. Testas efter publicering.
