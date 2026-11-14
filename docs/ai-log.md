@@ -113,3 +113,44 @@ UI-kanter: 4.8 (kant/pergament), 6.9 (blå knapp/pergament), 13.1 (fokusring).
 - ~~Självbedömning eller skrivläge?~~ Beslut: självbedömning behålls.
 - Är 10 minuter och 20 kort lagom? Värdet ändras i `SESSION_MINUTES` i `modules/exam.js`.
 - Uppläsningen beror på vilka röster som finns i iPhonen. Testas efter publicering.
+
+---
+
+## Fas 3 – Läsning (2026-11-14)
+
+### Vad som byggdes
+- `modules/reading-plan.js`: ren logik för läsplanen (ISO-veckor, dagens sidor, hur långt efter planen man är). 6 enhetstester.
+- `modules/reading.js` och `data/reading-vitsippor.json` med veckoplanen v43–v48 (s. 3–166) och tre generiska frågor.
+- `views/reading-session.js`, stegen:
+  1. "Var är du i boken?" Man skriver vilken sida man läst till.
+  2. "Dagens läsning" visar förslaget, en neutral rad om planen och läsläget (Själv / Tillsammans med någon / Lyssnar på boken).
+  3. "Nu läser du": börja med en sida, timern räknar uppåt, pausa och spara.
+  4. "Var kom du?" Man skriver sidan man läste till.
+  5. "Svara på frågor" eller "Berätta muntligt för en vuxen" → klart.
+- `views/form.js`: fält med synliga etiketter, hjälptext och vänliga felmeddelanden i text (3.3.1), samt radioknappar med stora tryckytor.
+- `lib/clock.js` och `views/pause-notice.js`: timern och pausförslaget delas nu av prov och läsning.
+
+### Val och alternativ
+| Beslut | Valt | Alternativ | Varför |
+|---|---|---|---|
+| Dagens sidor | Veckans återstående sidor delat på återstående dagar (mån–sön), högst 15 per dag (`maxPagesPerDay`) | Fast antal sidor per dag | Anpassar sig om man ligger före eller efter, utan att ett enskilt pass blir för stort. |
+| Ligger efter | Jämförs med planens början på veckan, inte dag för dag | Daglig jämförelse | Mindre tjat. Visas i en neutral ruta med info-ikon, guldkant och aldrig rött. |
+| Sidor före planen | Sida 1–2 räknas inte (planen börjar på s. 3) | Börja på s. 1 | Följer skolans plan. |
+| Läsläge | Väljs innan man börjar läsa, sparas i loggen, påverkar inget annat | Väljs efteråt | Alla tre räknas lika. Texten säger det också. |
+| Frågor | Valfria att svara på, inga krav på längd, sparas i loggen till föräldraläget | Obligatoriska | Ansträngning, inte prestation. |
+| Muntligt | Visar frågorna som stöd, sedan "Vi har pratat" | Bara en knapp | Hjälper den vuxna att veta vad man kan prata om. |
+| Sidfält | `type="text"` med `inputmode="numeric"` | `type="number"` | Bättre för skärmläsare och ingen scroll som av misstag ändrar värdet. Ger ändå sifferknappsatsen på iPhone. |
+| Tom feedbackruta | Visuellt dold när den är tom | `display: none` | Live-regionen ligger kvar i tillgänglighetsträdet så att VoiceOver läser upp ny text. |
+
+### Testat
+- `npm test`: 12 av 12 godkända.
+- Hela flödet: felaktig sida ("sextio", 200) ger vänligt fel i text med `aria-invalid` och fokus i fältet → s. 60 → förslag s. 61–75 och "14 sidor efter planen" → läsa → avbryta och återuppta → s. 70 → frågor → klart.
+- Muntliga vägen och läsläget "tillsammans" sparas i loggen.
+- Kortflödet fungerar fortfarande efter att timern flyttades till en delad fil.
+- axe: 0 fel i alla steg. Tangentbord: piltangenter i radiogruppen, Enter skickar formulär, fokus flyttas till varje stegs rubrik.
+- 320 px: ingen horisontell scroll. `npm run validate`: 0 fel.
+
+### Kvar för dig att avgöra
+- Är 15 sidor per dag lagom som tak? Ändras med `maxPagesPerDay` i JSON-filen.
+- Ska läsningen räknas över helgen (7 dagar) eller bara vardagar? Nu räknas alla 7 dagar.
+- Svaren på frågorna sparas på enheten och visas i föräldraläget i Fas 4. Är det okej, eller ska de inte sparas alls?
