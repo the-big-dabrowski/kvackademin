@@ -110,6 +110,6 @@ UI-kanter: 4.8 (kant/pergament), 6.9 (blå knapp/pergament), 13.1 (fokusring).
 
 ### Kvar för dig att avgöra
 - Riktiga provdatum (`examDate` i formatet `ÅÅÅÅ-MM-DD`) och riktiga biologibegrepp.
-- Är självbedömning rätt, eller vill du ha ett skrivläge för glosor (stavning) som tillval?
+- ~~Självbedömning eller skrivläge?~~ Beslut: självbedömning behålls.
 - Är 10 minuter och 20 kort lagom? Värdet ändras i `SESSION_MINUTES` i `modules/exam.js`.
 - Uppläsningen beror på vilka röster som finns i iPhonen. Testas efter publicering.
