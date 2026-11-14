@@ -1,0 +1,16 @@
+@use "../abstracts" as *;
+
+// Kvackis feedback after an answer. Also the aria-live region.
+.feedback {
+  padding: var(--space-3) var(--space-4);
+  border: var(--border-width) solid var(--color-primary);
+  border-radius: var(--radius);
+  background-color: var(--color-panel);
+  font-weight: 700;
+}
+
+// Keep the live region in the accessibility tree, just without a box while empty.
+.feedback:empty {
+  padding: 0;
+  border: 0;
+}

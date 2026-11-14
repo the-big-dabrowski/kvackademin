@@ -1,0 +1,30 @@
+@use "../abstracts" as *;
+
+.session {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr);
+  gap: var(--space-4);
+}
+
+.session__meta,
+.session__timer,
+.session__progress {
+  color: var(--color-text-muted);
+}
+
+.session__stage {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr);
+  gap: var(--space-4);
+  justify-items: start;
+}
+
+.session__actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--space-3);
+}
+
+.session__pause:empty {
+  display: none;
+}
