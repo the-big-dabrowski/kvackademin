@@ -154,3 +154,45 @@ UI-kanter: 4.8 (kant/pergament), 6.9 (blå knapp/pergament), 13.1 (fokusring).
 - Är 15 sidor per dag lagom som tak? Ändras med `maxPagesPerDay` i JSON-filen.
 - Ska läsningen räknas över helgen (7 dagar) eller bara vardagar? Nu räknas alla 7 dagar.
 - ~~Ska svaren på frågorna sparas?~~ Beslut: ja, de sparas på enheten och visas i föräldraläget i Fas 4.
+
+---
+
+## Fas 4 – Logg, rapport och föräldraläge (2026-11-14)
+
+### Vad som byggdes
+- `core/rewards.js`: coins och XP räknas fram ur loggen. 5 kr per genomfört uppdrag, tak 25 kr per ISO-vecka och 100 kr per kalendermånad. XP: 1 per svar eller steg, 10 per genomfört uppdrag, inget tak. 5 enhetstester.
+- `core/log.js`: import som slår ihop loggar utan dubbletter. `core/missions.js` sparar nu uppdragets titel i loggen vid start och klart.
+- `core/report.js`: dagens rapport ur loggen. Varje modul har en `summarize(meta)` som ger en rad, till exempel "läste sidorna 61–72, läste själv, svarade på frågor".
+- `core/settings.js`: mottagare för rapporten (standard "pappa") och PIN-hash.
+- `views/report.js` ("Dagens rapport"): lista över dagens uppdrag, coins den här veckan, knappen "Skicka till pappa" (Web Share API) och "Kopiera text" som reserv. Texten som skickas syns i en ruta.
+- `views/mission-done.js`: gemensam avslutning efter varje uppdrag med coins och en primär knapp: "Nästa uppdrag: …" eller "Till dagens rapport".
+- `views/parent.js` ("Förälder"): skapa PIN, lås upp, coins och XP, tabeller per vecka och månad, logg per dag med läsfrågornas svar, mottagare för rapporten, export och import, lås.
+- Idag visar "Se dagens rapport" som enda knapp när allt är klart.
+
+### Val och alternativ
+| Beslut | Valt | Alternativ | Varför |
+|---|---|---|---|
+| Coins sparas | Räknas fram ur loggen varje gång | Spara ett saldo | Kan aldrig hamna i otakt med loggen, och taken följer med vid import. |
+| Coins per uppdrag | 5 kr (max 5 uppdrag per vecka ger taket) | Olika belopp per typ | Enkelt och lika för alla uppdrag. |
+| Vecka/månad | ISO-vecka och kalendermånad, båda tak gäller | Bara veckotak | Månadstaket på 100 kr spelar roll i månader med fem veckor. |
+| PIN | Saltad SHA-256-hash, 4–8 siffror, klistra in tillåtet (3.3.8) | Klartext | Lätt spärr, inte riktig säkerhet: den som rensar webbplatsdata rensar också PIN-koden. Utan säker anslutning (http på lokalt nät) används en enklare hash. |
+| Upplåst läge | Bara i minnet medan vyn är öppen | Kom ihåg upplåsning | Barnet kan inte gå in i föräldraläget efter att en vuxen lämnat det. |
+| Glömd PIN | Förklaring: rensa webbplatsdata | Återställ-knapp | En knapp skulle barnet också kunna använda. |
+| Mottagare | Inställning i föräldraläget, standard "pappa" | Hårdkodat "pappa" | Fungerar för alla familjer och lägger inget namn i koden. |
+| Export | All sparad data som JSON | Bara loggen | Kan återställa allt på en ny enhet. |
+| Import | Loggen slås ihop utan dubbletter, övrig data ersätts, PIN och inställningar ändras inte | Ersätt allt | Inget försvinner av misstag, och man låser inte ut sig med en gammal PIN. |
+| Rapporttext | Titel och en rad per uppdrag, coins för veckan, inga svar och inga minuter | Allt från loggen | Kort, och läsfrågornas svar stannar på enheten. |
+
+### Testat
+- `npm test`: 17 av 17 godkända.
+- Hela dagen i webbläsaren: glosor → "Nästa uppdrag" → biologi → läsning med frågor → "Till dagens rapport". Coins 5, 10, 15 av 25. Idag visar "Se dagens rapport".
+- "Kopiera text" fungerar med reserv via markerad text. Web Share finns inte i testwebbläsaren och testas på iPhone efter publicering.
+- PIN: för kort kod och olika koder ger vänliga fel i text, fel PIN ger "Försök igen", upplåst läge låses när man lämnar vyn.
+- Export → rensa → import återställer alla 39 händelser. En andra import lägger till 0. En trasig fil ger ett vänligt fel.
+- axe: 0 fel på rapport, föräldraläge (låst och upplåst), Idag och Uppdrag. 320 px: ingen horisontell scroll. `npm run validate`: 0 fel.
+
+### Kvar för dig att avgöra
+- Är 5 kr per uppdrag rätt nivå?
+- Ska barnet se XP någonstans? Nu syns XP bara i föräldraläget.
+- Behövs "Byt PIN-kod" och "Rensa all data" i föräldraläget? Inte byggt.
+- Exportknappen laddar ner en fil. Testas på iPhone efter publicering.
