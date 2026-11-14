@@ -42,6 +42,8 @@ export function readingStatus(book, lastPage, todayISO) {
   const last = plan[plan.length - 1];
 
   if (lastPage >= end) return { phase: 'finished', end, lastPage };
+  // Pages before the plan's first page (title pages etc.) are not part of the reading.
+  const effective = Math.max(lastPage, first.from - 1);
   if (todayKey < weekKey(book.year, first.week)) return { phase: 'before', end, lastPage, firstWeek: first };
 
   const index = plan.findIndex((p) => weekKey(book.year, p.week) === todayKey);
@@ -49,19 +51,19 @@ export function readingStatus(book, lastPage, todayISO) {
 
   if (index === -1) {
     // The plan is over but pages are left.
-    const from = lastPage + 1;
+    const from = effective + 1;
     return {
       phase: 'after', end, lastPage,
-      behindPages: last.to - lastPage,
+      behindPages: last.to - effective,
       suggestion: { from, to: Math.min(end, from + maxPerDay - 1) },
     };
   }
 
   const entry = plan[index];
   const expectedAtWeekStart = index > 0 ? plan[index - 1].to : entry.from - 1;
-  const behindPages = Math.max(0, expectedAtWeekStart - lastPage);
-  const weekRemaining = Math.max(0, entry.to - lastPage);
-  const from = lastPage + 1;
+  const behindPages = Math.max(0, expectedAtWeekStart - effective);
+  const weekRemaining = Math.max(0, entry.to - effective);
+  const from = effective + 1;
 
   let suggestion;
   if (weekRemaining > 0) {

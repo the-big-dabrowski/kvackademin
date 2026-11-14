@@ -1,0 +1,22 @@
+{
+  "type": "reading",
+  "id": "vitsippor",
+  "subject": "Svenska",
+  "title": "Vitsippor och pissråttor",
+  "year": 2026,
+  "pages": 166,
+  "maxPagesPerDay": 15,
+  "plan": [
+    { "week": 43, "from": 3, "to": 20 },
+    { "week": 44, "from": 21, "to": 50 },
+    { "week": 45, "from": 51, "to": 74 },
+    { "week": 46, "from": 75, "to": 102 },
+    { "week": 47, "from": 103, "to": 134 },
+    { "week": 48, "from": 135, "to": 166 }
+  ],
+  "questions": [
+    "Vad hände?",
+    "Vem var med?",
+    "Vad tror du händer sen?"
+  ]
+}

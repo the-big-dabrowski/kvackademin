@@ -39,6 +39,12 @@ test('week already done gives an optional extra suggestion', () => {
   assert.equal(s.suggestion.from, 103);
 });
 
+test('a reader who has not started begins at the first planned page', () => {
+  const s = readingStatus(book, 0, '2026-10-19');
+  assert.equal(s.suggestion.from, 3);
+  assert.equal(s.behindPages, 0);
+});
+
 test('before, after and finished phases', () => {
   assert.equal(readingStatus(book, 0, '2026-10-01').phase, 'before');
   const after = readingStatus(book, 150, '2026-12-07');
