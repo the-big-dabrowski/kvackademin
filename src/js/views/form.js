@@ -9,16 +9,16 @@ function describedBy(...ids) {
 }
 
 /** Text field for a whole number. Uses inputmode="numeric" for the iPhone number keyboard. */
-export function numberField({ id, label, hint, value = '' }) {
+export function numberField({ id, label, hint, value = '', type = 'text', autocomplete = 'off' }) {
   const hintId = hint ? `${id}-hint` : null;
   const errorId = `${id}-error`;
   const input = h('input', {
     class: 'field__input field__input--short',
     id,
     name: id,
-    type: 'text',
+    type,
     inputmode: 'numeric',
-    autocomplete: 'off',
+    autocomplete,
     value: String(value),
     'aria-describedby': describedBy(hintId),
   });
@@ -58,6 +58,15 @@ export function parsePage(raw, min, max) {
   const page = Number(raw);
   if (page < min || page > max) return { error: `Skriv en sida mellan ${min} och ${max}.` };
   return { page };
+}
+
+/** Single-line text field with a visible label. */
+export function textField({ id, label, value = '', autocomplete = 'off' }) {
+  const input = h('input', { class: 'field__input', id, name: id, type: 'text', autocomplete, value });
+  return {
+    el: h('div', { class: 'field' }, h('label', { class: 'field__label', for: id }, label), input),
+    input,
+  };
 }
 
 export function textArea({ id, label, value = '' }) {
