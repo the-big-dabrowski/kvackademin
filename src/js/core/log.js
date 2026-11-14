@@ -22,3 +22,19 @@ export async function getLog() {
 export async function getLogForMission(missionId) {
   return (await getLog()).filter((e) => e.missionId === missionId);
 }
+
+const entryKey = (e) => `${e.timestamp}|${e.missionId}|${e.event}`;
+
+/** Merge imported entries into the log, skipping duplicates. Returns how many were added. */
+export async function importEntries(entries) {
+  if (!Array.isArray(entries)) return 0;
+  const valid = entries.filter((e) => e && e.missionId && e.event && e.timestamp);
+  let added = 0;
+  await storage.update(KEY, (list) => {
+    const seen = new Set(list.map(entryKey));
+    const fresh = valid.filter((e) => !seen.has(entryKey(e)));
+    added = fresh.length;
+    return [...list, ...fresh].sort((a, b) => a.timestamp.localeCompare(b.timestamp));
+  }, []);
+  return added;
+}

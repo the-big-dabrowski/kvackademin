@@ -2,6 +2,7 @@ import * as storage from './storage.js';
 import { allModules, getModule } from './registry.js';
 import { logEvent, EVENTS } from './log.js';
 import { loadAll } from './data.js';
+import { localDateISO } from '../lib/dates.js';
 
 /**
  * Today's missions are computed from all registered modules.
@@ -15,10 +16,7 @@ export const STATUS = Object.freeze({ NEW: 'new', IN_PROGRESS: 'in-progress', DO
 const stateKey = (id) => `mission:${id}`;
 
 export function todayISO(date = new Date()) {
-  const y = date.getFullYear();
-  const m = String(date.getMonth() + 1).padStart(2, '0');
-  const d = String(date.getDate()).padStart(2, '0');
-  return `${y}-${m}-${d}`;
+  return localDateISO(date);
 }
 
 export async function getTodaysMissions(date = new Date()) {
@@ -49,7 +47,7 @@ async function saveState(missionId, patch) {
 export async function start(mission) {
   const state = await getState(mission.id);
   if (state.status === STATUS.NEW) {
-    await logEvent({ missionId: mission.id, type: mission.type, event: EVENTS.START });
+    await logEvent({ missionId: mission.id, type: mission.type, event: EVENTS.START, meta: { title: mission.title } });
   }
   return saveState(mission.id, { status: STATUS.IN_PROGRESS });
 }
@@ -61,7 +59,8 @@ export async function saveProgress(mission, progress, meta = {}) {
 }
 
 export async function complete(mission, meta = {}) {
-  await logEvent({ missionId: mission.id, type: mission.type, event: EVENTS.DONE, meta });
+  // The title is stored so reports still make sense after the data file changes.
+  await logEvent({ missionId: mission.id, type: mission.type, event: EVENTS.DONE, meta: { title: mission.title, ...meta } });
   return saveState(mission.id, { status: STATUS.DONE });
 }
 

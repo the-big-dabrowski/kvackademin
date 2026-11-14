@@ -71,9 +71,14 @@ function getMissions(exam, ctx) {
   }];
 }
 
+function summarize(meta) {
+  return meta.practiced ? `övade på ${meta.practiced} kort` : 'övade';
+}
+
 export default {
   type: 'exam',
   label: 'Prov',
   getMissions,
+  summarize,
   view: createExamSessionView({ loadDeck, saveDeck, planSession, daysUntil, daysLeftText }),
 };

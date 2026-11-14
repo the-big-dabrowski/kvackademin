@@ -48,10 +48,22 @@ async function getMissions(book, ctx) {
   }];
 }
 
+const MODE_TEXT = { self: 'läste själv', together: 'läste tillsammans med någon', listened: 'lyssnade på boken' };
+const REFLECTION_TEXT = { questions: 'svarade på frågor', oral: 'berättade för en vuxen' };
+
+function summarize(meta) {
+  const parts = [];
+  if (meta.from && meta.to) parts.push(meta.to >= meta.from ? `läste ${pagesText(meta)}` : 'satte sig med boken');
+  if (MODE_TEXT[meta.mode]) parts.push(MODE_TEXT[meta.mode]);
+  if (REFLECTION_TEXT[meta.reflection]) parts.push(REFLECTION_TEXT[meta.reflection]);
+  return parts.join(', ') || 'läste';
+}
+
 export default {
   type: 'reading',
   label: 'Läsning',
   getMissions,
+  summarize,
   view: createReadingSessionView({
     loadBookState,
     saveLastPage,
