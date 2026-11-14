@@ -192,7 +192,17 @@ UI-kanter: 4.8 (kant/pergament), 6.9 (blå knapp/pergament), 13.1 (fokusring).
 - axe: 0 fel på rapport, föräldraläge (låst och upplåst), Idag och Uppdrag. 320 px: ingen horisontell scroll. `npm run validate`: 0 fel.
 
 ### Kvar för dig att avgöra
-- Är 5 kr per uppdrag rätt nivå?
+- ~~Är 5 kr per uppdrag rätt nivå?~~ Ändrat, se uppföljning nedan.
 - Ska barnet se XP någonstans? Nu syns XP bara i föräldraläget.
 - Behövs "Byt PIN-kod" och "Rensa all data" i föräldraläget? Inte byggt.
 - Exportknappen laddar ner en fil. Testas på iPhone efter publicering.
+
+### Uppföljning: belopp per uppdrag (2026-11-14)
+Du ville att beloppet skulle räknas fram utifrån månadstaket 100 kr, med veckotaket 25 kr kvar.
+- **Beräkning:** 100 kr / (30,4 dagar × 3 uppdrag per dag) ≈ 1,10 kr per uppdrag. Avrundat till hela 10 öre.
+- **Effekt:** alla uppdrag en hel vecka ger 21 × 1,10 = 23,10 kr (under veckotaket). En månad med 31 dagar ger 102,30 kr, som stoppas av taket på 100 kr. Månader med 30 dagar ger 99 kr.
+- **Teknik:** alla belopp räknas i öre (heltal) och visas som "1,10 kr". Beräkningen står i `core/rewards.js` (`EXPECTED_MISSIONS_PER_DAY`, `AVERAGE_DAYS_PER_MONTH`), så beloppet ändras automatiskt om antalet uppdrag per dag ändras där.
+- **Alternativ:** 1 kr (enklare tal, ger högst 91–93 kr i månaden) eller räkna om beloppet efter hur många uppdrag som faktiskt finns varje dag (blir olika belopp olika dagar, svårare för barnet att förstå).
+- **Testat:** 19 av 19 tester godkända, bland annat att en hel vecka ger 23,10 kr och att en hel månad med 31 dagar landar på exakt 100 kr.
+
+**Kvar för dig att avgöra:** antalet uppdrag per dag är nu 3 (glosor, biologi, läsning). Om det blir fler eller färre uppdrag framöver, ska `EXPECTED_MISSIONS_PER_DAY` ändras så att månaden fortfarande landar på ungefär 100 kr?
