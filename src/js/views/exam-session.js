@@ -3,9 +3,8 @@ import { navigate } from '../core/router.js';
 import * as missions from '../core/missions.js';
 import * as fc from '../engines/flashcards.js';
 import { isSpeechSupported, speak, stopSpeaking } from '../lib/speech.js';
-
-const PAUSE_SUGGESTION_MS = 20 * 60 * 1000;
-const CLOCK_TICK_MS = 15 * 1000;
+import { createClock, elapsedText, PAUSE_SUGGESTION_MS } from '../lib/clock.js';
+import { pauseNotice, PAUSE_ANNOUNCEMENT } from './pause-notice.js';
 
 const PRAISE = [
   'Bra jobbat!',
@@ -29,8 +28,7 @@ export function createExamSessionView(api) {
       let deck = await api.loadDeck(exam);
       const saved = await missions.getState(mission.id);
       let progress = saved.progress ?? null; // { session, elapsedMs, pauseOffered }
-      let clockId = null;
-      let segmentStart = null;
+      let clock = null;
       let leaving = false;
       let praiseIndex = 0;
 
@@ -51,7 +49,7 @@ export function createExamSessionView(api) {
             `${exam.subject}. ${api.daysLeftText(api.daysUntil(today, exam.examDate))}.`),
           mission.placeholder
             ? h('p', { class: 'notice' }, icon(ICONS.info, 'notice__icon'),
-              h('span', {}, 'Det här är exempelbegrepp. En vuxen behöver fylla i de riktiga från skolan.'))
+              h('span', { class: 'notice__text' }, 'Det här är exempelbegrepp. En vuxen behöver fylla i de riktiga från skolan.'))
             : null,
           pauseBox,
           feedback,
@@ -60,41 +58,24 @@ export function createExamSessionView(api) {
       );
 
       // ---- Clock (counts up, never down) ---------------------------------
-      const elapsed = () => (progress?.elapsedMs ?? 0) + (segmentStart ? Date.now() - segmentStart : 0);
-
       function renderClock() {
-        const minutes = Math.floor(elapsed() / 60000);
-        timerText.textContent = minutes < 1 ? 'Du har precis börjat.' : `Du har övat i ${minutes} min.`;
-        if (!progress.pauseOffered && elapsed() >= PAUSE_SUGGESTION_MS) offerPause();
+        timerText.textContent = elapsedText(clock.elapsed());
+        if (!progress.pauseOffered && clock.elapsed() >= PAUSE_SUGGESTION_MS) offerPause();
       }
 
       function startClock() {
-        if (segmentStart) return;
-        segmentStart = Date.now();
-        clockId = window.setInterval(renderClock, CLOCK_TICK_MS);
+        clock ??= createClock({ initialMs: progress.elapsedMs ?? 0, onTick: renderClock });
+        clock.start();
       }
 
       function stopClock() {
-        if (segmentStart) {
-          progress.elapsedMs = elapsed();
-          segmentStart = null;
-        }
-        window.clearInterval(clockId);
-        clockId = null;
+        if (clock?.isRunning()) progress.elapsedMs = clock.stop();
       }
 
       function offerPause() {
         progress.pauseOffered = true;
-        announce(feedback, 'Kvackis: Du har övat i 20 minuter. Vill du ta en paus?');
-        pauseBox.replaceChildren(
-          h('div', { class: 'notice notice--pause' },
-            h('p', {}, 'Du har övat i 20 minuter. Det är helt okej att ta en paus nu. Det du har gjort är sparat.'),
-            h('div', { class: 'session__actions' },
-              h('button', { type: 'button', class: 'button button--secondary', onclick: pause }, icon(ICONS.pause), 'Ta en paus'),
-              h('button', { type: 'button', class: 'button button--secondary', onclick: () => pauseBox.replaceChildren() }, 'Fortsätt öva'),
-            ),
-          ),
-        );
+        announce(feedback, PAUSE_ANNOUNCEMENT);
+        pauseBox.replaceChildren(pauseNotice({ onPause: pause, onContinue: () => pauseBox.replaceChildren() }));
       }
 
       async function pause() {
@@ -211,8 +192,7 @@ export function createExamSessionView(api) {
         await api.saveDeck(exam, deck);
         const { session, requeued } = fc.advanceSession(progress.session, known);
         progress.session = session;
-        progress.elapsedMs = elapsed();
-        segmentStart = Date.now();
+        progress.elapsedMs = clock.elapsed();
         await missions.saveProgress(mission, progress, { item: key, result: known ? 'known' : 'not-yet' });
 
         let message;
@@ -264,7 +244,7 @@ export function createExamSessionView(api) {
         title: exam.title,
         cleanup() {
           stopSpeaking();
-          if (leaving || !segmentStart) return;
+          if (leaving || !clock?.isRunning()) return;
           stopClock();
           missions.saveProgress(mission, progress, { action: 'leave' });
         },
