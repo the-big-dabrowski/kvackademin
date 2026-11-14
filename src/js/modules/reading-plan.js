@@ -5,22 +5,9 @@
  * `lastPage` is the last page the reader has finished (0 = not started).
  */
 
-const DAY_MS = 86400000;
+import { isoWeek } from '../lib/dates.js';
 
-function toUTC(iso) {
-  const [y, m, d] = iso.split('-').map(Number);
-  return new Date(Date.UTC(y, m - 1, d));
-}
-
-/** ISO 8601 week: { year, week, weekday } where Monday = 1 and Sunday = 7. */
-export function isoWeek(iso) {
-  const date = toUTC(iso);
-  const weekday = date.getUTCDay() || 7;
-  const thursday = new Date(date.getTime() + (4 - weekday) * DAY_MS);
-  const yearStart = Date.UTC(thursday.getUTCFullYear(), 0, 1);
-  const week = Math.ceil(((thursday - yearStart) / DAY_MS + 1) / 7);
-  return { year: thursday.getUTCFullYear(), week, weekday };
-}
+export { isoWeek };
 
 const weekKey = (year, week) => year * 100 + week;
 
