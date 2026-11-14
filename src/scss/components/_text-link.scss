@@ -1,0 +1,9 @@
+@use "../abstracts" as *;
+
+// Stand-alone text link (e.g. "Tillbaka till Idag") with a 44 px touch target.
+.text-link {
+  @include touch-target;
+  display: inline-flex;
+  align-items: center;
+  font-weight: 700;
+}
