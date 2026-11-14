@@ -1,0 +1,21 @@
+{
+  "name": "quackify",
+  "version": "0.1.0",
+  "private": true,
+  "description": "Läxapp som gör det lättare att komma igång med läxor.",
+  "type": "module",
+  "scripts": {
+    "sass": "sass --watch --no-source-map src/scss/main.scss css/main.css",
+    "build": "sass --no-source-map --style=compressed src/scss/main.scss css/main.css",
+    "serve": "python3 -m http.server 8080",
+    "validate": "html-validate index.html"
+  },
+  "license": "MIT",
+  "devDependencies": {
+    "@fontsource/atkinson-hyperlegible": "^5.3.0",
+    "@fontsource/pixelify-sans": "^5.3.0",
+    "axe-core": "^4.14.0",
+    "html-validate": "^11.21.1",
+    "sass": "^1.108.2"
+  }
+}
