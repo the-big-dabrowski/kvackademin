@@ -10,7 +10,9 @@ npm run sass     # bevakar och kompilerar Sass medan du jobbar
 npm run serve    # http://localhost:8080
 ```
 
-Innan commit: `npm run build` (komprimerad CSS) och `npm run validate` (HTML).
+Innan commit: `npm run build` (komprimerad CSS), `npm test` (enhetstester) och `npm run validate` (HTML).
+
+Publicering och test efter publicering: se [docs/publishing.md](docs/publishing.md).
 
 ## Struktur
 - `data/` – innehåll som JSON. `data/index.json` listar aktiva filer.
