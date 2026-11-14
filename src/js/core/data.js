@@ -1,6 +1,6 @@
 /**
- * Laddar innehåll från /data. Statisk hosting kan inte lista en mapp,
- * så /data/index.json räknar upp vilka filer som är aktiva.
+ * Loads content from /data. Static hosting cannot list a directory,
+ * so /data/index.json lists the active files.
  */
 
 const BASE = new URL('../../../data/', import.meta.url);

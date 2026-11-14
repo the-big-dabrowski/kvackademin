@@ -5,7 +5,7 @@ $breakpoints: (
   "md": 48em,
 );
 
-// Mobile first: stilar utan media query gäller minsta skärmen.
+// Mobile first: styles without a media query apply to the smallest screen.
 @mixin from($name) {
   @media (min-width: map.get($breakpoints, $name)) {
     @content;

@@ -4,10 +4,10 @@ import { logEvent, EVENTS } from './log.js';
 import { loadAll } from './data.js';
 
 /**
- * Dagens uppdrag räknas fram från alla moduler.
- * Livscykel för varje uppdrag: start → in progress → done.
+ * Today's missions are computed from all registered modules.
+ * Every mission has the same lifecycle: start → in progress → done.
  *
- * Mission: { id, type, title, firstStep, ... modulspecifika fält }
+ * Mission: { id, type, title, firstStep, ...module-specific fields }
  */
 
 export const STATUS = Object.freeze({ NEW: 'new', IN_PROGRESS: 'in-progress', DONE: 'done' });
@@ -54,7 +54,7 @@ export async function start(mission) {
   return saveState(mission.id, { status: STATUS.IN_PROGRESS });
 }
 
-/** Autosave efter varje svar. `progress` är modulens eget återupptagningsläge. */
+/** Autosave after every answer. `progress` is the module's own resume state. */
 export async function saveProgress(mission, progress, meta = {}) {
   await logEvent({ missionId: mission.id, type: mission.type, event: EVENTS.PROGRESS, meta });
   return saveState(mission.id, { status: STATUS.IN_PROGRESS, progress });

@@ -1,6 +1,6 @@
 @use "../abstracts" as *;
 
-// Text ligger alltid på solid panel.
+// Text always sits on a solid panel.
 .panel {
   background-color: var(--color-panel);
   border: var(--border-width) solid var(--color-border);

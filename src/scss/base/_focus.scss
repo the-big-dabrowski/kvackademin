@@ -1,16 +1,16 @@
 @use "../abstracts" as *;
 
-// Synligt fokus som aldrig döljs (WCAG 2.4.7, 2.4.11).
+// Visible focus that is never hidden (WCAG 2.4.7, 2.4.11).
 :focus-visible {
   @include focus-ring;
 }
 
-// Rubriker får programmatiskt fokus vid vybyte, men ska inte se klickbara ut.
+// Headings get programmatic focus on view change but should not look clickable.
 [tabindex="-1"]:focus:not(:focus-visible) {
   outline: none;
 }
 
-// Fokuserade element hamnar aldrig under headern.
+// Focused elements never end up under the header.
 html {
   scroll-padding-top: 6rem;
 }

@@ -1,7 +1,7 @@
 import * as storage from './storage.js';
 
 /**
- * Händelselogg: en post per livscykelsteg.
+ * Event log: one entry per lifecycle step.
  * { missionId, type, event, timestamp, meta }
  */
 

@@ -1,7 +1,7 @@
 import { h, icon, ICONS } from './dom.js';
 import { navigate } from '../core/router.js';
 
-/** Vyn "Idag": startskärmen med en enda primär handling. */
+/** "Idag" (today) view: the start screen with a single primary action. */
 export const todayView = {
   render(container) {
     container.append(
@@ -17,7 +17,7 @@ export const todayView = {
           type: 'button',
           class: 'button button--large',
           'data-js': 'start-missions',
-          onclick: () => navigate('/uppdrag'),
+          onclick: () => navigate('/missions'),
         }, icon(ICONS.play), 'Starta dagens uppdrag'),
       ),
     );

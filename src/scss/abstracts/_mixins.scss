@@ -1,4 +1,4 @@
-// Synligt fokus med dubbel ring: syns mot både ljus och mörk bakgrund.
+// Visible focus with a double ring: shows on both light and dark backgrounds.
 @mixin focus-ring {
   outline: var(--border-width) solid var(--color-focus);
   outline-offset: 2px;

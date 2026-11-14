@@ -5,24 +5,24 @@ import { missionsView } from './views/missions.js';
 import { parentView } from './views/parent.js';
 import { notFoundView } from './views/not-found.js';
 
-// Uppdragsmoduler registreras här (fas 2):
+// Mission modules are registered here (phase 2):
 // import { registerModule } from './core/registry.js';
 // import examModule from './modules/exam.js';
 // registerModule(examModule);
 
 router.addRoute('/', todayView);
-router.addRoute('/uppdrag', missionsView);
-router.addRoute('/foralder', parentView);
+router.addRoute('/missions', missionsView);
+router.addRoute('/parent', parentView);
 router.setNotFound(notFoundView);
 
-// Skip link: flytta fokus till innehållet utan att ändra hash (hash används av routern).
+// Skip link: move focus to the content without changing the hash (the router owns the hash).
 document.querySelector('[data-js="skip-link"]').addEventListener('click', (event) => {
   event.preventDefault();
   const main = document.querySelector('[data-js="view"]');
   (main.querySelector('h1') ?? main).focus();
 });
 
-// Markera aktuell vy i navigeringen med aria-current (syns även utan färg).
+// Mark the current view in the nav with aria-current (visible without relying on color).
 window.addEventListener('routechange', ({ detail }) => {
   for (const link of document.querySelectorAll('[data-js="nav-link"]')) {
     if (link.getAttribute('href') === `#${detail.path}`) link.setAttribute('aria-current', 'page');

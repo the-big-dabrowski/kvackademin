@@ -1,15 +1,15 @@
 /**
- * Enda stället i appen som rör localStorage.
+ * The only place in the app that touches localStorage.
  *
- * API:t är asynkront med flit, trots att localStorage är synkront.
- * Då kan den här filen bytas mot IndexedDB eller Capacitor Preferences
- * utan att någon annan fil behöver ändras.
+ * The API is async on purpose, even though localStorage is synchronous.
+ * That way this file can be swapped for IndexedDB or Capacitor Preferences
+ * without changing any other file.
  */
 
 const PREFIX = 'kvackademin:';
 const SCHEMA_VERSION = 1;
 
-// Fallback i minnet om localStorage är blockerat (t.ex. privat läge).
+// In-memory fallback if localStorage is blocked (e.g. private browsing).
 const memory = new Map();
 
 function backend() {
@@ -64,7 +64,7 @@ export async function set(key, value) {
   return value;
 }
 
-/** Läs, ändra och skriv i ett steg. `fn` får nuvarande värde och returnerar nytt. */
+/** Read, modify and write in one step. `fn` receives the current value and returns the new one. */
 export async function update(key, fn, fallback = null) {
   const next = fn(await get(key, fallback));
   return set(key, next);
@@ -78,7 +78,7 @@ export async function keys(prefix = '') {
   return allKeys().filter((k) => k.startsWith(prefix));
 }
 
-/** Be webbläsaren att inte rensa vår data automatiskt. */
+/** Ask the browser not to evict our data automatically. */
 export async function requestPersistence() {
   if (!navigator.storage?.persist) return false;
   try {
@@ -89,14 +89,14 @@ export async function requestPersistence() {
   }
 }
 
-/** All appdata som ett objekt, för export i föräldraläget. */
+/** All app data as one object, for export in parent mode. */
 export async function exportAll() {
   const data = {};
   for (const k of allKeys()) data[k] = await get(k);
   return { app: 'kvackademin', schemaVersion: SCHEMA_VERSION, exportedAt: new Date().toISOString(), data };
 }
 
-/** Återställ från en export. Befintliga nycklar med samma namn skrivs över. */
+/** Restore from an export. Existing keys with the same name are overwritten. */
 export async function importAll(payload) {
   if (!payload || payload.app !== 'kvackademin' || typeof payload.data !== 'object') {
     throw new Error('invalid-export');

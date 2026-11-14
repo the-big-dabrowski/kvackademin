@@ -23,7 +23,7 @@
   text-decoration: underline;
 }
 
-// Aktuell vy: tjock linje och understrykning, inte bara färg.
+// Current view: thick line and underline, not color alone.
 .site-nav__link[aria-current="page"] {
   border-bottom-color: var(--color-primary);
   text-decoration: underline;

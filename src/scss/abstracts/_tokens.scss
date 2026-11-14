@@ -1,8 +1,9 @@
-// Design tokens som CSS custom properties.
-// Alla textkombinationer är kontrollerade mot 4.5:1 och UI-kanter mot 3:1
-// (se docs/ai-log.md för uppmätta värden).
+// Design tokens as CSS custom properties.
+// Every text pair is checked against 4.5:1 and UI borders against 3:1
+// (see docs/ai-log.md for measured values).
+// Change the palette here; the rest of the styles only use these tokens.
 :root {
-  // Färger: pergament, blått, grönt, guld
+  // Colors: parchment, blue, green, gold
   --color-bg: #f6eed9;
   --color-panel: #fffbf2;
   --color-text: #1b2540;
@@ -23,7 +24,7 @@
   --color-focus: #1b2540;
   --color-focus-inner: #ffffff;
 
-  // Typografi
+  // Typography
   --font-body: "Atkinson Hyperlegible", system-ui, -apple-system, "Segoe UI", sans-serif;
   --font-heading: "Pixelify Sans", var(--font-body);
   --font-size-sm: 1rem;
@@ -34,7 +35,7 @@
   --line-height-body: 1.5;
   --line-height-heading: 1.2;
 
-  // Avstånd
+  // Spacing
   --space-1: 0.25rem;
   --space-2: 0.5rem;
   --space-3: 0.75rem;
@@ -43,7 +44,7 @@
   --space-6: 2rem;
   --space-7: 3rem;
 
-  // Form
+  // Shape
   --border-width: 3px;
   --radius: 0.25rem;
   --shadow-pixel: 0.25rem 0.25rem 0 var(--color-border);

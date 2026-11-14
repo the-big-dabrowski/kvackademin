@@ -1,4 +1,4 @@
-// Förstärkt kontrast när användaren ber om det i systemet.
+// Stronger contrast when the user asks for it in system settings.
 @media (prefers-contrast: more) {
   :root {
     --color-text-muted: var(--color-text);

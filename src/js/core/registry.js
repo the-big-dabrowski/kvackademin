@@ -1,13 +1,13 @@
 /**
- * Register över uppdragsmoduler, nycklat på datafilens `type`.
+ * Registry of mission modules, keyed by the data file's `type`.
  *
- * En modul är ett objekt med:
- *   type: string                         – matchar `type` i JSON-filen
- *   label: string                        – svensk visningstext
- *   getMissions(data, ctx) => Mission[]  – dagens uppdrag från en datafil
- *   view?: { render(container, params) } – vyn som kör uppdraget
+ * A module is an object with:
+ *   type: string                         – matches `type` in the JSON file
+ *   label: string                        – display text (Swedish)
+ *   getMissions(data, ctx) => Mission[]  – today's missions from one data file
+ *   view?: { render(container, params) } – the view that runs the mission
  *
- * Nya typer registreras i main.js; core behöver inte ändras.
+ * New types are registered in main.js; core does not need to change.
  */
 
 const modules = new Map();

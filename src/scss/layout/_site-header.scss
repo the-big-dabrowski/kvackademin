@@ -17,8 +17,8 @@
   margin-inline: auto;
 }
 
-// Sticky bara när skärmen är tillräckligt hög, så att headern aldrig
-// döljer fokuserat innehåll vid stark zoom (2.4.11).
+// Sticky only when the screen is tall enough, so the header never
+// hides focused content at high zoom (2.4.11).
 @media (min-height: 30em) {
   .site-header {
     position: sticky;

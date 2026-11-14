@@ -1,6 +1,6 @@
 import { h } from './dom.js';
 
-/** Vyn "Förälder". Tom tills fas 4 (PIN, logg, coins, export och import). */
+/** "Förälder" (parent) view. Empty until phase 4 (PIN, log, coins, export and import). */
 export const parentView = {
   render(container) {
     container.append(

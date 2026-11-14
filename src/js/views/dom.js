@@ -1,4 +1,4 @@
-/** Liten hjälpare för att bygga DOM utan innerHTML. */
+/** Small helper for building DOM without innerHTML. */
 export function h(tag, attrs = {}, ...children) {
   const el = document.createElement(tag);
   for (const [k, v] of Object.entries(attrs)) {
@@ -13,7 +13,7 @@ export function h(tag, attrs = {}, ...children) {
 
 const SVG_NS = 'http://www.w3.org/2000/svg';
 
-/** Enkel ikon. Alltid dekorativ: synlig text bär betydelsen. */
+/** Simple icon. Always decorative: visible text carries the meaning. */
 export function icon(pathD, className = 'button__icon') {
   const svg = document.createElementNS(SVG_NS, 'svg');
   svg.setAttribute('viewBox', '0 0 24 24');

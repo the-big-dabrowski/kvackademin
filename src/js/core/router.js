@@ -1,8 +1,8 @@
 /**
- * Hash-router (#/väg). Fungerar på GitHub Pages utan serverkonfiguration.
+ * Hash router (#/path). Works on GitHub Pages without server configuration.
  *
- * En vy är { render(container, params) => Promise<{ title }> | { title } }.
- * Efter vybyte flyttas fokus till vyns h1 och document.title uppdateras.
+ * A view is { render(container, params) => Promise<{ title }> | { title } }.
+ * After a view change, focus moves to the view's h1 and document.title is updated.
  */
 
 const APP_NAME = 'Kvackademin';
@@ -31,7 +31,7 @@ export function navigate(path) {
 
 function currentPath() {
   const hash = window.location.hash.replace(/^#/, '');
-  // Bara hashar som börjar med "/" är vägar; t.ex. "#main" (skip link) ignoreras.
+  // Only hashes starting with "/" are routes; e.g. "#main" (skip link) is ignored.
   return hash.startsWith('/') ? hash : lastPath;
 }
 
@@ -52,8 +52,8 @@ async function render() {
   const result = (await view.render(container, params)) ?? {};
   document.title = result.title ? `${result.title} – ${APP_NAME}` : APP_NAME;
 
-  // Första laddningen: låt fokus börja överst (skip link först).
-  // Vid vybyte: flytta fokus till vyns h1 så att skärmläsare läser den nya vyn.
+  // First load: leave focus at the top so the skip link comes first.
+  // On view change: move focus to the h1 so screen readers announce the new view.
   const heading = container.querySelector('h1');
   heading?.setAttribute('tabindex', '-1');
   if (heading && !isFirstRender) heading.focus({ preventScroll: true });

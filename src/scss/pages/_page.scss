@@ -1,6 +1,6 @@
 @use "../abstracts" as *;
 
-// Generisk vy (t.ex. 404 och platshållare).
+// Generic view (e.g. 404 and placeholders).
 .page {
   display: grid;
   grid-template-columns: minmax(0, 1fr);

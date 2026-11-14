@@ -1,7 +1,7 @@
 import { h } from './dom.js';
 import { getTodaysMissions } from '../core/missions.js';
 
-/** Vyn "Uppdrag": dagens uppdrag. Fylls när modulerna finns (fas 2). */
+/** "Uppdrag" view: today's missions. Populated once modules exist (phase 2). */
 export const missionsView = {
   async render(container) {
     const section = h('section', { class: 'page panel', 'aria-labelledby': 'missions-title' },
