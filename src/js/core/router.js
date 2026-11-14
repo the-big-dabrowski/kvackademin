@@ -59,6 +59,7 @@ async function render() {
   if (heading && !isFirstRender) heading.focus({ preventScroll: true });
   window.scrollTo(0, 0);
   isFirstRender = false;
+  window.dispatchEvent(new CustomEvent('routechange', { detail: { path } }));
 }
 
 export function start(target) {

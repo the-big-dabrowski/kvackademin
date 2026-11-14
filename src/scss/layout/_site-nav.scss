@@ -1,0 +1,31 @@
+@use "../abstracts" as *;
+
+.site-nav__list {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--space-1) var(--space-2);
+  padding: 0;
+  list-style: none;
+}
+
+.site-nav__link {
+  @include touch-target;
+  display: inline-flex;
+  align-items: center;
+  padding: var(--space-1) var(--space-2);
+  border-bottom: var(--border-width) solid transparent;
+  color: var(--color-text);
+  font-weight: 700;
+  text-decoration: none;
+}
+
+.site-nav__link:hover {
+  text-decoration: underline;
+}
+
+// Aktuell vy: tjock linje och understrykning, inte bara färg.
+.site-nav__link[aria-current="page"] {
+  border-bottom-color: var(--color-primary);
+  text-decoration: underline;
+  text-decoration-thickness: 2px;
+}

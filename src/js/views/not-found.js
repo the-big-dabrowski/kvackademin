@@ -5,8 +5,8 @@ export const notFoundView = {
     container.append(
       h('section', { class: 'page panel', 'aria-labelledby': 'nf-title' },
         h('h1', { id: 'nf-title' }, 'Sidan finns inte'),
-        h('p', {}, 'Ingen fara! Vi går tillbaka till start.'),
-        h('a', { class: 'button', href: '#/' }, 'Till start'),
+        h('p', {}, 'Ingen fara! Vi går tillbaka till Idag.'),
+        h('a', { class: 'button', href: '#/' }, 'Till Idag'),
       ),
     );
     return { title: 'Sidan finns inte' };

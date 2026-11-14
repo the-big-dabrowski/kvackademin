@@ -9,9 +9,10 @@
 
 .site-header__inner {
   display: flex;
+  flex-wrap: wrap;
   align-items: center;
   justify-content: space-between;
-  gap: var(--space-4);
+  gap: var(--space-1) var(--space-4);
   max-width: var(--content-width);
   margin-inline: auto;
 }

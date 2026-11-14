@@ -1,0 +1,29 @@
+@use "../abstracts" as *;
+
+.today {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr);
+  gap: var(--space-5);
+}
+
+.today__greeting {
+  display: grid;
+  gap: var(--space-4);
+  justify-items: center;
+
+  @include from("sm") {
+    grid-template-columns: auto minmax(0, 1fr);
+    justify-items: start;
+    align-items: center;
+  }
+}
+
+.today__mascot {
+  width: 7rem;
+  height: 7rem;
+  image-rendering: pixelated;
+}
+
+.today__lead {
+  font-size: var(--font-size-lg);
+}
