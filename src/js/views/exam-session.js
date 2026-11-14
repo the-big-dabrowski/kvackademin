@@ -131,7 +131,7 @@ export function createExamSessionView(api) {
             ? `Du har redan övat på ${new Set(progress.session.queue.slice(0, progress.session.position)).size} av ${count} kort. Allt är sparat, så vi fortsätter där du slutade.`
             : `Ungefär ${mission.estimatedMinutes} minuter, ${count} kort. Vi börjar med ett enda kort.`),
           startButton,
-          h('p', {}, h('a', { href: '#/missions' }, 'Tillbaka till uppdragen')),
+          h('p', {}, h('a', { class: 'text-link', href: '#/missions' }, 'Tillbaka till uppdragen')),
         );
       }
 

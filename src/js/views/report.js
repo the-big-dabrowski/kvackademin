@@ -58,7 +58,7 @@ export const reportView = {
       h('div', { class: 'field' },
         h('label', { class: 'field__label', for: 'report-text' }, 'Text som skickas'),
         textField),
-      h('p', {}, h('a', { href: '#/' }, 'Tillbaka till Idag')),
+      h('p', {}, h('a', { class: 'text-link', href: '#/' }, 'Tillbaka till Idag')),
     ].filter(Boolean));
     return { title: 'Dagens rapport' };
   },

@@ -112,7 +112,7 @@ export function createReadingSessionView(api) {
           bookState = await api.saveLastPage(book, result.page);
           stepPlan().focus();
         });
-        return show('Var är du i boken?', form, h('p', {}, h('a', { href: '#/missions' }, 'Tillbaka till uppdragen')));
+        return show('Var är du i boken?', form, h('p', {}, h('a', { class: 'text-link', href: '#/missions' }, 'Tillbaka till uppdragen')));
       }
 
       // ---- Step 2: today's pages and reading mode --------------------------

@@ -22,6 +22,6 @@ export async function missionDoneFooter(mission) {
     next
       ? h('a', { class: 'button button--large', href: missionHref(next) }, `Nästa uppdrag: ${next.title}`)
       : h('a', { class: 'button button--large', href: '#/report' }, 'Till dagens rapport'),
-    h('p', {}, h('a', { href: '#/' }, 'Tillbaka till Idag')),
+    h('p', {}, h('a', { class: 'text-link', href: '#/' }, 'Tillbaka till Idag')),
   ];
 }

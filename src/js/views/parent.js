@@ -84,7 +84,7 @@ export const parentView = {
       const log = await getLog();
       const today = localDateISO();
       const rewards = computeRewards(log);
-      const status = h('p', { class: 'feedback', 'aria-live': 'polite' });
+      const status = h('p', { class: 'feedback', 'aria-live': 'polite', 'data-js': 'parent-status' });
       const heading = h('h2', { tabindex: '-1' }, 'Coins och XP');
 
       body.replaceChildren(
@@ -211,7 +211,7 @@ export const parentView = {
           await storage.importAll({ ...payload, data: rest });
           const added = await importEntries(log);
           await refresh(false);
-          const fresh = body.querySelector('.feedback');
+          const fresh = body.querySelector('[data-js="parent-status"]');
           announce(fresh, `Importen är klar. ${added} nya händelser lades till i loggen.`);
         } catch {
           announce(status, 'Filen gick inte att läsa. Välj en fil som har exporterats från Kvackademin.');
