@@ -206,3 +206,47 @@ Du ville att beloppet skulle räknas fram utifrån månadstaket 100 kr, med veck
 - **Testat:** 19 av 19 tester godkända, bland annat att en hel vecka ger 23,10 kr och att en hel månad med 31 dagar landar på exakt 100 kr.
 
 **Kvar för dig att avgöra:** antalet uppdrag per dag är nu 3 (glosor, biologi, läsning). Om det blir fler eller färre uppdrag framöver, ska `EXPECTED_MISSIONS_PER_DAY` ändras så att månaden fortfarande landar på ungefär 100 kr?
+
+---
+
+## Fas 5 – Granskning och publicering (2026-11-14)
+
+### Definition of done
+| Krav | Resultat | Hur |
+|---|---|---|
+| Mobile first | Uppfyllt | Alla stilar utgår från minsta skärmen, media queries bara uppåt. |
+| Godkänd HTML-validering | Uppfyllt för `index.html`, delvis för vyerna | `npm run validate`: 0 fel. Vyerna byggs i JS; deras markup har granskats manuellt i 16 lägen och med axe, men inte med en validator. |
+| Lighthouse ≥ 90 tillgänglighet | Uppfyllt lokalt | 100 på Idag, Uppdrag, prov, läsning, rapport och föräldraläge (mobil). Best practices 100 (96 på en vy på grund av att den lokala Python-servern tappade anslutningar under testet, inte ett fel i appen). Körs igen på publicerad adress. |
+| Tangentbord | Uppfyllt | Hela flödet med Tab, Enter och piltangenter. Fokus flyttas till rubrik vid vybyte och mellan steg. |
+| Zoom 200/400 % | Uppfyllt i simulering | 320 px bredd + ökat textavstånd i alla vyer: ingen horisontell scroll, inga element utanför. Riktig zoom i Safari testas efter publicering. |
+| Kontrast | Uppfyllt | Alla tokens uppmätta (text ≥ 6,2:1, kanter ≥ 4,8:1). axe: 0 kontrastfel. |
+| Rubriker | Uppfyllt | En h1 per vy, h2 för steg och uppdrag, h3 för dagar i loggen. Ingen nivå hoppas över. |
+| Formulär | Uppfyllt | Synliga etiketter, hjälptexter med `aria-describedby`, fel i text med ikon och `aria-invalid`, fokus till fältet. |
+| axe | Uppfyllt | 0 fel i alla vyer och steg. |
+| VoiceOver på iPhone | Inte gjort | Kräver riktig iPhone. Checklista i `docs/publishing.md`. |
+
+### Rättat i den här fasen
+- Uppdragslistan skrev ut texten "null" när det fanns uppdrag kvar. Rättat.
+- Föräldraläget hittade statusrutan via en BEM-klass. Använder nu `data-js`.
+- Fristående textlänkar ("Tillbaka till Idag" m.fl.) var 22 px höga. Har nu en egen klass `.text-link` med minst 44 px.
+
+### Avvikelser från CLAUDE.md som är kvar
+1. **Engelska ord utan `lang="en"` (3.1.2):** "coins" och "XP" står i svensk UI-text. Förslag: byt till svenska ("mynt" och "poäng") eller markera dem med `lang="en"`.
+2. **Filer utanför fillistan:** `core/data.js`, `core/rewards.js`, `core/report.js`, `core/settings.js` samt mappen `lib/` (speech, clock, share, pin, dates). Alla följer arkitekturen men står inte i listan.
+3. **`.u-visually-hidden`** är inte BEM (beslutat att behålla).
+4. **Exempeldata:** provdatum är `PLACEHOLDER` och biologibegreppen är exempel.
+
+### Övrigt att känna till
+- **Offline:** ingen service worker, så hemskärmsappen behöver nätverk för att starta. Inget krav i CLAUDE.md, men rekommenderas som nästa steg.
+- **Många små filer:** ungefär 35 JS-moduler laddas var för sig (ingen bundler enligt CLAUDE.md). Fungerar bra över HTTP/2 på GitHub Pages, men första laddningen blir långsammare på svag uppkoppling.
+- **Publikt innehåll:** bokens titel och veckoplanen blir publika med repot.
+- **Ej byggt:** "Byt PIN-kod" och "Rensa all data" i föräldraläget.
+- **Testas efter publicering:** Web Share, export på iPhone, uppläsningens röster, VoiceOver, riktig zoom och liggande läge.
+
+### Publicering
+Steg för steg i `docs/publishing.md`: kontroll före publicering, skapa repot (med `gh` eller på github.com), slå på Pages från `main` / root, uppdatera, lägga på hemskärmen och en checklista för test efter publicering.
+
+### Kvar för dig att avgöra
+- "coins" och "XP": svenska ord eller `lang="en"`?
+- Ska jag publicera (skapa repot och slå på Pages), eller gör du det själv med guiden?
+- Ska offline-stöd (service worker) byggas innan appen används på riktigt?
