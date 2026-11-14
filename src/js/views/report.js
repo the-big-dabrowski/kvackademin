@@ -51,7 +51,7 @@ export const reportView = {
     section.append(...[
       h('p', {}, h('strong', {}, 'Kvackis: '), 'Snyggt jobbat idag! Här är det du har gjort.'),
       h('ul', { class: 'report__list' }, report.lines.map((line) => h('li', {}, line))),
-      h('p', {}, `Coins den här veckan: ${report.weekCoins} av ${report.weekCap} kr.`),
+      h('p', {}, `Coins den här veckan: ${report.weekText}.`),
       status,
       shareButton,
       copyButton,

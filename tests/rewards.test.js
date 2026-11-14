@@ -1,6 +1,6 @@
 import { test } from 'node:test';
 import assert from 'node:assert/strict';
-import { computeRewards, COINS_PER_MISSION, WEEK_CAP, MONTH_CAP } from '../src/js/core/rewards.js';
+import { computeRewards, formatKr, COINS_PER_MISSION, WEEK_CAP, MONTH_CAP } from '../src/js/core/rewards.js';
 import { weekKey, isoWeek } from '../src/js/lib/dates.js';
 
 // Noon UTC keeps the local day stable in any European time zone.
@@ -12,23 +12,35 @@ test('dates helpers', () => {
   assert.equal(isoWeek('2026-12-31').week, 53);
 });
 
+test('amount per mission is calculated from the monthly cap: 1,10 kr', () => {
+  assert.equal(COINS_PER_MISSION, 110);
+  assert.equal(formatKr(COINS_PER_MISSION), '1,10 kr');
+  assert.equal(formatKr(WEEK_CAP), '25 kr');
+});
+
 test('each done mission gives coins, the same mission only once', () => {
   const r = computeRewards([done('a', '2026-11-09'), done('a', '2026-11-09'), done('b', '2026-11-10')]);
   assert.equal(r.weeks['2026-W46'], COINS_PER_MISSION * 2);
   assert.equal(r.awards.a, COINS_PER_MISSION);
 });
 
-test('weekly cap is 25', () => {
-  const log = Array.from({ length: 8 }, (_, i) => done(`m${i}`, '2026-11-10'));
-  const r = computeRewards(log);
-  assert.equal(r.weeks['2026-W46'], WEEK_CAP);
-  assert.equal(r.awards.m7, 0);
+test('a full week of 3 missions a day stays under the weekly cap', () => {
+  const days = ['2026-11-09', '2026-11-10', '2026-11-11', '2026-11-12', '2026-11-13', '2026-11-14', '2026-11-15'];
+  const r = computeRewards(days.flatMap((d) => [done(`${d}a`, d), done(`${d}b`, d), done(`${d}c`, d)]));
+  assert.equal(r.weeks['2026-W46'], 21 * COINS_PER_MISSION); // 23,10 kr
+  assert.ok(r.weeks['2026-W46'] < WEEK_CAP);
 });
 
-test('monthly cap is 100 even across five weeks', () => {
-  const days = ['2026-12-01', '2026-12-08', '2026-12-15', '2026-12-22', '2026-12-29'];
-  const log = days.flatMap((d, w) => Array.from({ length: 5 }, (_, i) => done(`w${w}-${i}`, d)));
+test('weekly cap is 25 kr', () => {
+  const log = Array.from({ length: 30 }, (_, i) => done(`m${i}`, '2026-11-10'));
   const r = computeRewards(log);
+  assert.equal(r.weeks['2026-W46'], WEEK_CAP);
+  assert.equal(r.awards.m29, 0);
+});
+
+test('every mission every day in a 31-day month reaches exactly the 100 kr cap', () => {
+  const days = Array.from({ length: 31 }, (_, i) => `2026-12-${String(i + 1).padStart(2, '0')}`);
+  const r = computeRewards(days.flatMap((d) => [done(`${d}a`, d), done(`${d}b`, d), done(`${d}c`, d)]));
   assert.equal(r.months['2026-12'], MONTH_CAP);
 });
 

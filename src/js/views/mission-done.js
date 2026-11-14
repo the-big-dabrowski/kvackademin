@@ -1,7 +1,7 @@
 import { h } from './dom.js';
 import { getTodaysMissions } from '../core/missions.js';
 import { getLog } from '../core/log.js';
-import { computeRewards, coinsThisWeek, WEEK_CAP } from '../core/rewards.js';
+import { computeRewards, coinsThisWeek, WEEK_CAP, formatKr } from '../core/rewards.js';
 import { nextMission, missionHref } from './missions.js';
 
 /**
@@ -17,8 +17,8 @@ export async function missionDoneFooter(mission) {
 
   return [
     h('p', {}, coins > 0
-      ? `Du fick ${coins} coins för att du gjorde klart uppdraget. Den här veckan: ${week} av ${WEEK_CAP} kr.`
-      : `Coins-taket är nått för den här gången (${week} av ${WEEK_CAP} kr den här veckan). Bra jobbat ändå!`),
+      ? `Du fick ${formatKr(coins)} för att du gjorde klart uppdraget. Den här veckan: ${formatKr(week)} av ${formatKr(WEEK_CAP)}.`
+      : `Coins-taket är nått för den här gången (${formatKr(week)} av ${formatKr(WEEK_CAP)} den här veckan). Bra jobbat ändå!`),
     next
       ? h('a', { class: 'button button--large', href: missionHref(next) }, `Nästa uppdrag: ${next.title}`)
       : h('a', { class: 'button button--large', href: '#/report' }, 'Till dagens rapport'),

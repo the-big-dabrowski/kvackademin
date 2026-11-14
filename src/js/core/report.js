@@ -1,6 +1,6 @@
 import { getLog } from './log.js';
 import { getModule } from './registry.js';
-import { computeRewards, coinsThisWeek, WEEK_CAP } from './rewards.js';
+import { computeRewards, coinsThisWeek, WEEK_CAP, formatKr } from './rewards.js';
 import { localDateISO, formatDay } from '../lib/dates.js';
 
 /**
@@ -36,7 +36,7 @@ export async function buildDailyReport(day = localDateISO()) {
     lines.length ? 'Klart idag:' : 'Inga uppdrag klara idag än.',
     ...lines.map((l) => `- ${l}`),
     '',
-    `Coins den här veckan: ${weekCoins} av ${WEEK_CAP} kr`,
+    `Coins den här veckan: ${formatKr(weekCoins)} av ${formatKr(WEEK_CAP)}`,
   ].join('\n');
-  return { day, lines, weekCoins, weekCap: WEEK_CAP, text };
+  return { day, lines, weekText: `${formatKr(weekCoins)} av ${formatKr(WEEK_CAP)}`, text };
 }

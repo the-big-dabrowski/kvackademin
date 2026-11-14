@@ -2,7 +2,9 @@ import { h, icon, ICONS, announce } from './dom.js';
 import * as storage from '../core/storage.js';
 import { getLog, importEntries } from '../core/log.js';
 import { getSettings, updateSettings } from '../core/settings.js';
-import { computeRewards, coinsThisWeek, coinsThisMonth, WEEK_CAP, MONTH_CAP } from '../core/rewards.js';
+import {
+  computeRewards, coinsThisWeek, coinsThisMonth, formatKr, WEEK_CAP, MONTH_CAP, COINS_PER_MISSION,
+} from '../core/rewards.js';
 import { describeDone } from '../core/report.js';
 import { createPin, checkPin, isValidPin } from '../lib/pin.js';
 import { localDateISO, formatDay, formatWeek, formatMonth } from '../lib/dates.js';
@@ -89,10 +91,10 @@ export const parentView = {
         status,
         heading,
         h('ul', { class: 'parent__stats' },
-          h('li', {}, `Den här veckan: ${coinsThisWeek(rewards, today)} av ${WEEK_CAP} kr`),
-          h('li', {}, `Den här månaden: ${coinsThisMonth(rewards, today)} av ${MONTH_CAP} kr`),
+          h('li', {}, `Den här veckan: ${formatKr(coinsThisWeek(rewards, today))} av ${formatKr(WEEK_CAP)}`),
+          h('li', {}, `Den här månaden: ${formatKr(coinsThisMonth(rewards, today))} av ${formatKr(MONTH_CAP)}`),
           h('li', {}, `XP totalt: ${rewards.xp}`)),
-        h('p', { class: 'field__hint' }, `Coins ges för genomförda uppdrag (5 kr per uppdrag), aldrig för antal rätt. XP ges för varje steg och uppdrag.`),
+        h('p', { class: 'field__hint' }, `Coins ges för genomförda uppdrag, aldrig för antal rätt: ${formatKr(COINS_PER_MISSION)} per uppdrag. Beloppet är räknat så att alla uppdrag varje dag (3 per dag) ger ungefär ${formatKr(MONTH_CAP)} i månaden. XP ges för varje steg och uppdrag.`),
         coinsTable('Coins per vecka', 'Vecka', Object.entries(rewards.weeks).slice(-WEEKS_SHOWN).reverse(), formatWeek, WEEK_CAP),
         coinsTable('Coins per månad', 'Månad', Object.entries(rewards.months).reverse(), formatMonth, MONTH_CAP),
         h('h2', {}, 'Logg per dag'),
@@ -116,7 +118,7 @@ export const parentView = {
         h('thead', {}, h('tr', {}, h('th', { scope: 'col' }, label), h('th', { scope: 'col' }, 'Coins'))),
         h('tbody', {}, rows.map(([key, coins]) => h('tr', {},
           h('th', { scope: 'row' }, format(key)),
-          h('td', {}, `${coins} av ${cap} kr${coins >= cap ? ' (taket nått)' : ''}`)))));
+          h('td', {}, `${formatKr(coins)} av ${formatKr(cap)}${coins >= cap ? ' (taket nått)' : ''}`)))));
     }
 
     function dayLog(log, rewards) {
@@ -140,7 +142,7 @@ export const parentView = {
             done.map((e) => h('li', {},
               h('span', {}, `Klart: ${describeDone(e)}`),
               e.meta?.minutes ? h('span', {}, ` (${e.meta.minutes} min)`) : null,
-              rewards.awards[e.missionId] ? h('span', {}, `, ${rewards.awards[e.missionId]} kr`) : null,
+              rewards.awards[e.missionId] ? h('span', {}, `, ${formatKr(rewards.awards[e.missionId])}`) : null,
               answersList(e.meta?.answers))),
             started.map((e) => h('li', {}, `Påbörjat: ${e.meta?.title ?? 'Uppdrag'}`))));
       }));
