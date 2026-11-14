@@ -1,0 +1,21 @@
+{
+  "type": "exam",
+  "id": "english-w47",
+  "subject": "Engelska",
+  "title": "Glosor vecka 47",
+  "examDate": "PLACEHOLDER",
+  "front": { "label": "Engelska", "lang": "en" },
+  "back": { "label": "Svenska", "lang": "sv" },
+  "cards": [
+    { "id": "leaf", "front": "leaf", "back": "löv" },
+    { "id": "rain", "front": "rain", "back": "regn" },
+    { "id": "umbrella", "front": "umbrella", "back": "paraply" },
+    { "id": "cold", "front": "cold", "back": "kall" },
+    { "id": "jacket", "front": "jacket", "back": "jacka" },
+    { "id": "dark", "front": "dark", "back": "mörk" },
+    { "id": "pumpkin", "front": "pumpkin", "back": "pumpa" },
+    { "id": "wind", "front": "wind", "back": "vind" },
+    { "id": "forest", "front": "forest", "back": "skog" },
+    { "id": "apple", "front": "apple", "back": "äpple" }
+  ]
+}

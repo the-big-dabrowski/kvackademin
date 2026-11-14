@@ -1,0 +1,18 @@
+{
+  "type": "exam",
+  "id": "biology",
+  "placeholder": true,
+  "placeholderNote": "PLACEHOLDER: exempelbegrepp. Byt ut mot riktiga begrepp, förklaringar och provdatum från skolan.",
+  "subject": "Biologi",
+  "title": "Biologibegrepp (exempel)",
+  "examDate": "PLACEHOLDER",
+  "front": { "label": "Begrepp", "lang": "sv" },
+  "back": { "label": "Förklaring", "lang": "sv" },
+  "cards": [
+    { "id": "photosynthesis", "front": "fotosyntes", "back": "När växter gör socker av solljus, vatten och koldioxid" },
+    { "id": "food-chain", "front": "näringskedja", "back": "Vem som äter vem i naturen" },
+    { "id": "predator", "front": "rovdjur", "back": "Ett djur som jagar och äter andra djur" },
+    { "id": "herbivore", "front": "växtätare", "back": "Ett djur som bara äter växter" },
+    { "id": "decomposer", "front": "nedbrytare", "back": "Liv som bryter ner döda växter och djur till jord" }
+  ]
+}
