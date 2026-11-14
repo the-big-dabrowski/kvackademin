@@ -28,3 +28,19 @@
 .session__pause:empty {
   display: none;
 }
+
+.session__form {
+  display: grid;
+  gap: var(--space-4);
+  justify-items: start;
+  width: 100%;
+}
+
+.session__highlight {
+  font-size: var(--font-size-lg);
+  font-weight: 700;
+}
+
+.session__list {
+  padding-left: var(--space-5);
+}

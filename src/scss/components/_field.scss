@@ -1,0 +1,57 @@
+@use "../abstracts" as *;
+
+// Form field with a visible label, optional hint and a friendly text error.
+.field {
+  display: grid;
+  gap: var(--space-2);
+  justify-items: start;
+  width: 100%;
+}
+
+.field__label {
+  font-weight: 700;
+}
+
+.field__hint {
+  color: var(--color-text-muted);
+}
+
+.field__input {
+  @include touch-target;
+  width: 100%;
+  padding: var(--space-2) var(--space-3);
+  border: var(--border-width) solid var(--color-border);
+  border-radius: var(--radius);
+  background-color: var(--color-panel);
+  font-size: var(--font-size-md);
+  line-height: var(--line-height-body);
+}
+
+.field__input--short {
+  max-width: 8rem;
+  font-size: var(--font-size-lg);
+}
+
+.field__input[aria-invalid="true"] {
+  border-color: var(--color-gold-text);
+  border-width: 4px;
+}
+
+// Errors are identified in text and with an icon, never by color alone.
+.field__error {
+  display: flex;
+  gap: var(--space-2);
+  align-items: flex-start;
+  font-weight: 700;
+}
+
+.field__error[hidden] {
+  display: none;
+}
+
+.field__error-icon {
+  flex: none;
+  width: 1.5rem;
+  height: 1.5rem;
+  color: var(--color-gold-text);
+}
