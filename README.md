@@ -1,4 +1,4 @@
-# Quackify (arbetsnamn)
+# Kvackademin (arbetsnamn)
 
 Läxapp som gör det lättare att komma igång med skolans riktiga läxor. Byggd för iPhone (Safari, hemskärmen) och hostas på GitHub Pages.
 

@@ -6,7 +6,7 @@
  * utan att någon annan fil behöver ändras.
  */
 
-const PREFIX = 'quackify:';
+const PREFIX = 'kvackademin:';
 const SCHEMA_VERSION = 1;
 
 // Fallback i minnet om localStorage är blockerat (t.ex. privat läge).
@@ -93,12 +93,12 @@ export async function requestPersistence() {
 export async function exportAll() {
   const data = {};
   for (const k of allKeys()) data[k] = await get(k);
-  return { app: 'quackify', schemaVersion: SCHEMA_VERSION, exportedAt: new Date().toISOString(), data };
+  return { app: 'kvackademin', schemaVersion: SCHEMA_VERSION, exportedAt: new Date().toISOString(), data };
 }
 
 /** Återställ från en export. Befintliga nycklar med samma namn skrivs över. */
 export async function importAll(payload) {
-  if (!payload || payload.app !== 'quackify' || typeof payload.data !== 'object') {
+  if (!payload || payload.app !== 'kvackademin' || typeof payload.data !== 'object') {
     throw new Error('invalid-export');
   }
   for (const [k, v] of Object.entries(payload.data)) await set(k, v);

@@ -5,7 +5,7 @@
  * Efter vybyte flyttas fokus till vyns h1 och document.title uppdateras.
  */
 
-const APP_NAME = 'Quackify';
+const APP_NAME = 'Kvackademin';
 const routes = [];
 let notFound = null;
 let container = null;
