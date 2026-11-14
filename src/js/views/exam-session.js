@@ -5,6 +5,7 @@ import * as fc from '../engines/flashcards.js';
 import { isSpeechSupported, speak, stopSpeaking } from '../lib/speech.js';
 import { createClock, elapsedText, PAUSE_SUGGESTION_MS } from '../lib/clock.js';
 import { pauseNotice, PAUSE_ANNOUNCEMENT } from './pause-notice.js';
+import { missionDoneFooter } from './mission-done.js';
 
 const PRAISE = [
   'Bra jobbat!',
@@ -212,19 +213,16 @@ export function createExamSessionView(api) {
         stopClock();
         const practiced = fc.uniqueCount(progress.session);
         await missions.complete(mission, { practiced, minutes: Math.round(progress.elapsedMs / 60000) });
-        showDone(practiced);
+        await showDone(practiced);
       }
 
-      function showDone(practiced) {
+      async function showDone(practiced) {
         pauseBox.replaceChildren();
         const heading = h('h2', { tabindex: '-1' }, 'Klart för idag!');
         stage.replaceChildren(
           heading,
-          h('p', {}, h('strong', {}, 'Kvackis: '), practiced
-            ? `Vad bra att du övade! Du gick igenom ${practiced} kort idag. Det är så man lär sig.`
-            : 'Det här uppdraget är redan klart för idag. Bra jobbat!'),
-          h('a', { class: 'button button--large', href: '#/' }, 'Tillbaka till Idag'),
-          h('p', {}, h('a', { href: '#/missions' }, 'Se dagens uppdrag')),
+          h('p', {}, h('strong', {}, 'Kvackis: '), `Vad bra att du övade! Du gick igenom ${practiced} kort idag. Det är så man lär sig.`),
+          ...(await missionDoneFooter(mission)),
         );
         heading.focus();
       }
@@ -234,7 +232,7 @@ export function createExamSessionView(api) {
         stage.replaceChildren(
           h('h2', {}, 'Klart för idag!'),
           h('p', {}, h('strong', {}, 'Kvackis: '), 'Det här uppdraget är redan klart för idag. Bra jobbat!'),
-          h('a', { class: 'button button--large', href: '#/' }, 'Tillbaka till Idag'),
+          ...(await missionDoneFooter(mission)),
         );
       } else {
         showIntro();

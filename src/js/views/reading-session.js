@@ -4,6 +4,7 @@ import * as missions from '../core/missions.js';
 import { createClock, elapsedText, PAUSE_SUGGESTION_MS } from '../lib/clock.js';
 import { pauseNotice, PAUSE_ANNOUNCEMENT } from './pause-notice.js';
 import { numberField, parsePage, textArea, choiceGroup } from './form.js';
+import { missionDoneFooter } from './mission-done.js';
 
 /**
  * View that runs one reading mission:
@@ -204,8 +205,9 @@ export function createReadingSessionView(api) {
         );
         form.addEventListener('submit', async (event) => {
           event.preventDefault();
-          const answers = fields.map((f) => f.input.value.trim());
-          progress.answers = answers;
+          progress.answers = fields.map((f) => f.input.value.trim());
+          // Stored with the questions so parent mode can show them later.
+          const answers = questions.map((question, i) => ({ question, answer: progress.answers[i] }));
           await finish({ reflection: 'questions', answers });
         });
         return show('Tänk tillbaka', form,
@@ -228,17 +230,16 @@ export function createReadingSessionView(api) {
           from: progress.from, to: progress.readTo, pages, mode: progress.mode, reflection,
           answers: answers ?? null, minutes: Math.round((progress.elapsedMs ?? 0) / 60000),
         });
-        stepDone(pages).focus();
+        (await stepDone(pages)).focus();
       }
 
-      function stepDone(pages) {
+      async function stepDone(pages) {
         pauseBox.replaceChildren();
         return show('Klart för idag!',
           h('p', {}, h('strong', {}, 'Kvackis: '), pages > 0
             ? `Bra läst! Du läste ${api.pagesText({ from: progress.from, to: progress.readTo })} idag.`
             : 'Bra att du satte dig med boken idag. Det räknas också!'),
-          h('a', { class: 'button button--large', href: '#/' }, 'Tillbaka till Idag'),
-          h('p', {}, h('a', { href: '#/missions' }, 'Se dagens uppdrag')),
+          ...(await missionDoneFooter(mission)),
         );
       }
 
@@ -253,7 +254,7 @@ export function createReadingSessionView(api) {
       if (saved.status === missions.STATUS.DONE) {
         show('Klart för idag!',
           h('p', {}, h('strong', {}, 'Kvackis: '), 'Läsningen är redan klar för idag. Bra jobbat!'),
-          h('a', { class: 'button button--large', href: '#/' }, 'Tillbaka till Idag'));
+          ...(await missionDoneFooter(mission)));
       } else if (progress?.step === 'reading') {
         show('Välkommen tillbaka!',
           h('p', {}, `Idag läser du ${api.pagesText(progress)}. Allt är sparat.`),

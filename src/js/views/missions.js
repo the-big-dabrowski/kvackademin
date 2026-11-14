@@ -43,6 +43,7 @@ export const missionsView = {
     const next = nextMission(missions);
     section.append(
       h('p', {}, next ? 'Ta ett uppdrag i taget.' : 'Alla dagens uppdrag är klara. Snyggt jobbat!'),
+      next ? null : h('a', { class: 'button button--large', href: '#/report' }, 'Se dagens rapport'),
       h('ul', { class: 'mission-list' }, missions.map((m) => {
         const done = m.state.status === STATUS.DONE;
         const isNext = m === next;
@@ -62,6 +63,9 @@ export const missionsView = {
         );
       })),
     );
+    if (next && missions.some((m) => m.state.status === STATUS.DONE)) {
+      section.append(h('p', {}, h('a', { href: '#/report' }, 'Se dagens rapport')));
+    }
     return { title: 'Uppdrag' };
   },
 };
