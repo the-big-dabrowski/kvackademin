@@ -153,4 +153,4 @@ UI-kanter: 4.8 (kant/pergament), 6.9 (blå knapp/pergament), 13.1 (fokusring).
 ### Kvar för dig att avgöra
 - Är 15 sidor per dag lagom som tak? Ändras med `maxPagesPerDay` i JSON-filen.
 - Ska läsningen räknas över helgen (7 dagar) eller bara vardagar? Nu räknas alla 7 dagar.
-- Svaren på frågorna sparas på enheten och visas i föräldraläget i Fas 4. Är det okej, eller ska de inte sparas alls?
+- ~~Ska svaren på frågorna sparas?~~ Beslut: ja, de sparas på enheten och visas i föräldraläget i Fas 4.
