@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="sv">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <title>Quackify</title>
+  <meta name="description" content="Läxappen som hjälper dig att komma igång, ett litet steg i taget.">
+  <meta name="theme-color" content="#fffbf2">
+  <meta name="mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-title" content="Quackify">
+  <meta name="apple-mobile-web-app-status-bar-style" content="default">
+  <link rel="manifest" href="manifest.webmanifest">
+  <link rel="icon" type="image/png" href="img/icons/icon-192.png">
+  <link rel="apple-touch-icon" href="img/icons/apple-touch-icon.png">
+  <link rel="preload" href="fonts/atkinson-hyperlegible-latin-400-normal.woff2" as="font" type="font/woff2" crossorigin>
+  <link rel="stylesheet" href="css/main.css">
+  <script type="module" src="src/js/main.js"></script>
+</head>
+<body>
+  <a class="skip-link" href="#main" data-js="skip-link">Hoppa till innehållet</a>
+
+  <header class="site-header">
+    <div class="site-header__inner">
+      <a class="logo" href="#/">
+        <img class="logo__image" src="img/logo.png" alt="" width="44" height="44">
+        <span class="logo__text">Quackify</span><span class="u-visually-hidden">, till startsidan</span>
+      </a>
+    </div>
+  </header>
+
+  <main id="main" class="site-main" tabindex="-1" data-js="view">
+    <noscript>
+      <p>Quackify behöver JavaScript för att fungera.</p>
+    </noscript>
+  </main>
+
+  <div class="u-visually-hidden" aria-live="polite" data-js="announcer"></div>
+</body>
+</html>
