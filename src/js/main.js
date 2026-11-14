@@ -8,9 +8,11 @@ import { notFoundView } from './views/not-found.js';
 import { missionView } from './views/mission.js';
 import { registerModule } from './core/registry.js';
 import examModule from './modules/exam.js';
+import readingModule from './modules/reading.js';
 
 // Mission modules: add new types here; core does not change.
 registerModule(examModule);
+registerModule(readingModule);
 
 router.addRoute('/', todayView);
 router.addRoute('/missions', missionsView);
