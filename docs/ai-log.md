@@ -45,9 +45,9 @@ En post per fas: vad AI:n föreslog, vilka alternativ som fanns och vad som är 
 
 **Kvar att avgöra eller testa:**
 - `.u-visually-hidden` är en hjälpklass, inte BEM. Vanlig konvention, men avviker från regeln.
-- Vägarna är på svenska (`#/uppdrag`, `#/foralder`) medan CLAUDE.md säger att kod ska vara på engelska. De syns i Safaris adressfält men inte i hemskärmsappen. Byta till `#/missions` och `#/parent`?
-- Färgerna är valda utifrån beskrivningen "blått, grönt, guld, pergament". Jag har inte sett mood boarden.
-- Git-författaren i commits är ditt fullständiga namn, och det syns i ett publikt repo. Regeln i CLAUDE.md gäller bara commit-meddelanden, men du kanske vill använda GitHubs noreply-adress och ett annat namn (`git config user.name` / `user.email`).
+- ~~Vägarna är på svenska~~ Åtgärdat: `#/missions` och `#/parent`.
+- Färgerna är valda utifrån beskrivningen "blått, grönt, guld, pergament". Ingen mood board än; färgerna behålls.
+- ~~Git-författaren är ditt fullständiga namn~~ Åtgärdat: se uppföljning nedan.
 - Lighthouse och VoiceOver på riktig iPhone är inte körda.
 - Ingen service worker än, så appen fungerar inte offline.
 
@@ -61,3 +61,12 @@ UI-kanter: 4.8 (kant/pergament), 6.9 (blå knapp/pergament), 13.1 (fokusring).
 - 320 px bredd med 200 % text och ökat textavstånd: ingen horisontell scroll.
 - Tangentbord: skip link → logo → meny → innehåll. Vybyte flyttar fokus till h1, `document.title` och `aria-current` uppdateras.
 - Menylänkarna är minst 44 px höga.
+
+### Uppföljning (2026-11-14)
+- **Kod på engelska:** vägarna heter nu `#/missions` och `#/parent`, och alla kommentarer i JS och Sass är översatta. UI-texten är fortfarande svenska. Gamla svenska vägar ger 404-vyn.
+- **Git-författare:** repots lokala git-config är `Kvackademin <the-big-dabrowski@users.noreply.github.com>`. Alla tidigare commits är omskrivna med den författaren (inget var pushat). Den globala git-configen på datorn är orörd.
+- **Färger:** behålls. Alla färger finns som tokens i `src/scss/abstracts/_tokens.scss`, så en ny palett är en ändring i en fil. Kontrasten måste kontrolleras igen efter ändring.
+
+**Kvar för dig att avgöra:**
+- GitHub rekommenderar noreply-adressen med ditt användar-ID (`ID+användarnamn@users.noreply.github.com`, finns under Settings → Emails). Den nuvarande adressen utan ID fungerar men kopplas inte alltid till ditt konto.
+- Användarnamnet `the-big-dabrowski` syns ändå i repo-URL:en och i CLAUDE.md.
