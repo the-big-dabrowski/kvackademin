@@ -5,13 +5,16 @@ import { missionsView } from './views/missions.js';
 import { parentView } from './views/parent.js';
 import { notFoundView } from './views/not-found.js';
 
-// Mission modules are registered here (phase 2):
-// import { registerModule } from './core/registry.js';
-// import examModule from './modules/exam.js';
-// registerModule(examModule);
+import { missionView } from './views/mission.js';
+import { registerModule } from './core/registry.js';
+import examModule from './modules/exam.js';
+
+// Mission modules: add new types here; core does not change.
+registerModule(examModule);
 
 router.addRoute('/', todayView);
 router.addRoute('/missions', missionsView);
+router.addRoute('/missions/:id', missionView);
 router.addRoute('/parent', parentView);
 router.setNotFound(notFoundView);
 
@@ -25,7 +28,9 @@ document.querySelector('[data-js="skip-link"]').addEventListener('click', (event
 // Mark the current view in the nav with aria-current (visible without relying on color).
 window.addEventListener('routechange', ({ detail }) => {
   for (const link of document.querySelectorAll('[data-js="nav-link"]')) {
-    if (link.getAttribute('href') === `#${detail.path}`) link.setAttribute('aria-current', 'page');
+    const target = link.getAttribute('href').slice(1);
+    const isCurrent = target === '/' ? detail.path === '/' : detail.path === target || detail.path.startsWith(`${target}/`);
+    if (isCurrent) link.setAttribute('aria-current', 'page');
     else link.removeAttribute('aria-current');
   }
 });

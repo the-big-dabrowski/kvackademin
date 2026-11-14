@@ -1,5 +1,7 @@
 import { h, icon, ICONS } from './dom.js';
 import { navigate } from '../core/router.js';
+import { getTodaysMissions } from '../core/missions.js';
+import { nextMission } from './missions.js';
 
 /** "Idag" (today) view: the start screen with a single primary action. */
 export const todayView = {
@@ -17,7 +19,15 @@ export const todayView = {
           type: 'button',
           class: 'button button--large',
           'data-js': 'start-missions',
-          onclick: () => navigate('/missions'),
+          onclick: async () => {
+            // Go straight to the first unfinished mission: the first step stays small.
+            try {
+              const next = nextMission(await getTodaysMissions());
+              navigate(next ? `/missions/${encodeURIComponent(next.id)}` : '/missions');
+            } catch {
+              navigate('/missions');
+            }
+          },
         }, icon(ICONS.play), 'Starta dagens uppdrag'),
       ),
     );

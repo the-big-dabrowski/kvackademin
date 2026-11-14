@@ -3,6 +3,7 @@
  *
  * A view is { render(container, params) => Promise<{ title }> | { title } }.
  * After a view change, focus moves to the view's h1 and document.title is updated.
+ * A view may return `cleanup()`; it runs before the next view renders (timers, autosave).
  */
 
 const APP_NAME = 'Kvackademin';
@@ -11,6 +12,7 @@ let notFound = null;
 let container = null;
 let isFirstRender = true;
 let lastPath = '/';
+let cleanupCurrent = null;
 
 export function addRoute(pattern, view) {
   const keys = [];
@@ -48,8 +50,11 @@ async function render() {
   if (!isFirstRender && path === lastPath && !window.location.hash.startsWith('#/')) return;
   lastPath = path;
   const { view, params } = match(path);
+  cleanupCurrent?.();
+  cleanupCurrent = null;
   container.replaceChildren();
   const result = (await view.render(container, params)) ?? {};
+  cleanupCurrent = result.cleanup ?? null;
   document.title = result.title ? `${result.title} – ${APP_NAME}` : APP_NAME;
 
   // First load: leave focus at the top so the skip link comes first.
