@@ -257,3 +257,34 @@ Steg för steg i `docs/publishing.md`: kontroll före publicering, skapa repot (
 - Live: https://the-big-dabrowski.github.io/kvackademin/
 - Kontrollerat på live-adressen: sidan, CSS, JS, data, manifest, logo och fonter svarar 200. Säker kontext (HTTPS) och SubtleCrypto finns. Inga konsolfel. Uppdragslistan laddar alla tre uppdrag.
 - Kvar: checklistan i `docs/publishing.md` på iPhone (VoiceOver, delning, uppläsning, export, zoom, liggande läge).
+
+## Förenklad version: glosor och prov med direkt rättning (2026-11-15)
+
+### Bakgrund
+Efter första körningen: att få ut barnets svar krävde antingen flera steg i iPhones dela-meny eller en GitHub-nyckel på barnets telefon. Beslut: ta bort belöningar, föräldrasida och rapport tills vidare och fokusera på frågor som rättas direkt. Läsdelen vilar.
+
+### Vad som byggdes
+- **Svarslägen** (`answerMode`) per prov, per riktning eller per kort: `type` (skriv), `choice` (flerval) och `self` (vänd kortet, som tidigare).
+- **Rättning** i `lib/answers.js`: stora/små bokstäver, mellanslag och skiljetecken ignoreras. Ett stavfel godkänns i ord med minst 5 bokstäver. Extra godkända svar via `acceptBack`/`acceptFront`.
+- **Flerval:** felalternativen hämtas från andra kort i samma prov (eller `choicesBack`/`choicesFront`). Ordningen är stabil per kort, så den inte hoppar runt vid omladdning.
+- **Efter svar:** "Rätt!" eller "Inte riktigt än." i text och ikon (inte bara färg), rätt svar visas, Kvackis svarar via `aria-live`, och en knapp "Nästa kort". Fel kort kommer tillbaka senare i passet som förut. "Jag vet inte" finns som lugn utväg.
+- **Skriv-läget:** fältet får fokus på varje kort så att tangentbordet stannar uppe. Autokorrigering och stor bokstav är avstängt. Ordet som ska översättas är kopplat till fältet med `aria-describedby`.
+- **Borttaget:** coins/XP (`rewards.js`), föräldrasidan och PIN (`parent.js`, `pin.js`, `settings.js`), rapport och delning (`report.js`, `share.js`) samt tillhörande Sass. Allt finns i git-historiken.
+- **Läsdelen** är kvar i koden men inte med i `data/index.json`.
+- **`tests/data.test.js`** kontrollerar alla `exam-*.json`: giltig JSON, obligatoriska fält, datumformat, svarslägen och unika id:n.
+- **`docs/content-guide.md`:** hur man lägger in ett nytt prov på github.com, med mall.
+- Engelska glosor: skriv-läge. Biologi: flerval (förklaringarna är för långa att skriva).
+
+### Kontrollerat
+`npm test` (21 gröna), html-validate, axe 0 fel på kort, resultat och Idag, ingen sidscroll vid 320 px. Flödena körda hela vägen i webbläsaren.
+
+### Alternativ som diskuterades
+- Automatisk sändning av svar till ett privat GitHub-repo: kräver nyckel på barnets telefon och internet. Valdes bort.
+- Dela-knapp efter varje svar eller i slutet: för många steg utanför appen. Valdes bort.
+
+### Kvar för dig att avgöra
+- Säkerhetskopia av framstegen, nu när föräldrasidan är borta (just nu finns ingen).
+- Hur du vill se barnets resultat framöver.
+- Riktiga provdatum och biologibegrepp.
+- När läsdelen ska tillbaka, och då med kontrollfrågor i JSON.
+- Typsnittet (Pixelify Sans) är inte ändrat än.

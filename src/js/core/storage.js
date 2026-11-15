@@ -89,7 +89,7 @@ export async function requestPersistence() {
   }
 }
 
-/** All app data as one object, for export in parent mode. */
+/** All app data as one object, for a future backup export. */
 export async function exportAll() {
   const data = {};
   for (const k of allKeys()) data[k] = await get(k);

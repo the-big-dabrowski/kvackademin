@@ -3,10 +3,6 @@ import { navigate } from '../core/router.js';
 import { getTodaysMissions, STATUS } from '../core/missions.js';
 import { nextMission } from './missions.js';
 
-function reportLink() {
-  return h('a', { class: 'button button--large', href: '#/report', 'data-js': 'open-report' }, 'Se dagens rapport');
-}
-
 function startButton() {
   return h('button', {
     type: 'button',
@@ -46,7 +42,7 @@ export const todayView = {
               ? 'Alla dagens uppdrag är klara. Vad bra jobbat!'
               : 'Hej! Redo för dagens uppdrag? Vi börjar med något litet, ett steg i taget.'),
         ),
-        allDone ? reportLink() : startButton(),
+        allDone ? null : startButton(),
       ),
     );
     return { title: 'Idag' };

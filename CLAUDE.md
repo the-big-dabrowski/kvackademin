@@ -17,14 +17,16 @@ Läxapp för barn runt 10 år med startsvårigheter. Syftet är att göra skolan
 - core/log.js sparar en händelse per livscykelsteg: `{ missionId, type, event, timestamp, meta }`.
 - engines/flashcards.js: Leitner med 3 lådor, båda riktningarna, fel svar flyttar kortet till låda 1. Används av exam-modulen.
 - Glosor och biologibegrepp är samma sak: ett `exam` med datum och kort.
+- Svarslägen per prov eller kort (`answerMode`): `self` (vänd kortet), `type` (skriv, rättas direkt och förlåtande) och `choice` (flerval). Rättning i lib/answers.js.
+- Innehåll redigeras direkt i JSON-filerna på github.com (se docs/content-guide.md). `npm test` kontrollerar datafilerna.
 - Autosave efter varje svar. Ett avbrutet pass ska kunna återupptas.
-- Vyer: "Idag" (start, en knapp: "Starta dagens uppdrag"), "Uppdrag", "Förälder" och en 404-vy.
+- Vyer: "Idag" (start, en knapp: "Starta dagens uppdrag"), "Uppdrag" och en 404-vy. (Förälder- och rapportvyn är borttagna tills vidare.)
 
 ```
 /index.html
 /manifest.webmanifest
 /css/main.css
-/data/index.json, exam-*.json, reading-*.json
+/data/index.json, exam-*.json, reading-*.json (läsdelen vilar, inte med i index.json)
 /src/scss/abstracts|vendors|base|layout|components|pages|themes + main.scss
 /src/js/main.js
 /src/js/core/router.js, storage.js, registry.js, missions.js, log.js
@@ -46,7 +48,7 @@ Läxapp för barn runt 10 år med startsvårigheter. Syftet är att göra skolan
 - En primär handling per skärm. Startskärmen har en knapp: "Starta dagens uppdrag".
 - Första steget i varje uppdrag är litet, till exempel ett enda kort eller en enda sida.
 - Ingen tidspress: inga nedräkningar, inga liv eller hjärtan, ingen belöning för hastighet. En timer räknar uppåt och föreslår paus efter 20 min.
-- Coins och XP ges för genomfört uppdrag och ansträngning, aldrig för antal rätt. Coins-tak: 25 kr/vecka och 100 kr/kalendermånad. Ingen betalning i appen.
+- Belöningssystemet (coins och XP) är borttaget tills vidare. Om det kommer tillbaka: belöning för genomfört uppdrag och ansträngning, aldrig för antal rätt. Ingen betalning i appen.
 - Fel svar ger lugn, uppmuntrande feedback från Kvackis och ett nytt försök, aldrig ett straff.
 - Inga topplistor, ingen chatt, ingen reklam.
 
@@ -61,14 +63,13 @@ Läxapp för barn runt 10 år med startsvårigheter. Syftet är att göra skolan
 - Färg är aldrig enda informationsbärare.
 - `prefers-reduced-motion` respekteras. Inga animationer under övningar.
 - Alla fält har synliga labels. Fel identifieras i text (3.3.1) i vänlig ton.
-- Föräldra-PIN: tillåt inklistring (3.3.8).
 - Valfri uppläsning med Web Speech API (`en-GB` för glosor, `sv-SE` för svenska), som en knapp, aldrig automatiskt.
 - Allt fungerar med tangentbord, mus och touch.
 
 ## Integritet
 - Repot är publikt: inget namn, ingen skola, ingen klass i kod, data eller commit-meddelanden.
-- Ingen data lämnar enheten, utom det användaren själv delar via rapportknappen.
-- Anropa `navigator.storage.persist()` vid start. Erbjud export och import av logg som JSON i föräldraläget.
+- Ingen data lämnar enheten.
+- Anropa `navigator.storage.persist()` vid start. Säkerhetskopia av loggen är ett öppet beslut (föräldraläget är borttaget).
 
 ## Arbetssätt
 - Arbeta en fas i taget. Stanna efter varje fas och sammanfatta vad som byggts och hur jag testar det.

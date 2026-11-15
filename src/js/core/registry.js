@@ -6,7 +6,7 @@
  *   label: string                        – display text (Swedish)
  *   getMissions(data, ctx) => Mission[]  – today's missions from one data file
  *   view?: { render(container, params) } – the view that runs the mission
- *   summarize?(meta) => string           – one line about a done mission, for reports
+ *   summarize?(meta) => string           – one line about a done mission, for summaries
  *
  * New types are registered in main.js; core does not need to change.
  */

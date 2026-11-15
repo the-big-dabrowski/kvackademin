@@ -1,0 +1,22 @@
+{
+  "type": "exam",
+  "id": "english-breakfast",
+  "subject": "Engelska",
+  "title": "Engelska glosor",
+  "examDate": "PLACEHOLDER",
+  "front": { "label": "Engelska", "lang": "en" },
+  "back": { "label": "Svenska", "lang": "sv" },
+  "answerMode": "type",
+  "cards": [
+    { "id": "breakfast", "front": "breakfast", "back": "frukost" },
+    { "id": "at-work", "front": "at work", "back": "på jobbet" },
+    { "id": "the-kitchen", "front": "the kitchen", "back": "köket" },
+    { "id": "bowls", "front": "bowls", "back": "skålar" },
+    { "id": "knives", "front": "knives", "back": "knivar" },
+    { "id": "of-course", "front": "of course", "back": "självklart", "acceptBack": ["så klart", "såklart", "givetvis"] },
+    { "id": "stomachs", "front": "stomachs", "back": "magar" },
+    { "id": "the-other", "front": "the other", "back": "den andra", "acceptBack": ["det andra"] },
+    { "id": "toast", "front": "toast", "back": "rostat bröd", "acceptBack": ["rostbröd"] },
+    { "id": "cereal", "front": "cereal", "back": "flingor" }
+  ]
+}

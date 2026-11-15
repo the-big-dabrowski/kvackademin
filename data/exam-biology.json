@@ -8,6 +8,7 @@
   "examDate": "PLACEHOLDER",
   "front": { "label": "Begrepp", "lang": "sv" },
   "back": { "label": "Förklaring", "lang": "sv" },
+  "answerMode": "choice",
   "cards": [
     { "id": "photosynthesis", "front": "fotosyntes", "back": "När växter gör socker av solljus, vatten och koldioxid" },
     { "id": "food-chain", "front": "näringskedja", "back": "Vem som äter vem i naturen" },

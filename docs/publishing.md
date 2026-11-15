@@ -85,24 +85,21 @@ git push
 
 Ikonen är Kvackis och namnet är "Kvackademin".
 
-All data sparas lokalt i den installerade appen. Safari och hemskärmsappen delar **inte** data med varandra, så använd alltid samma (hemskärmsappen). Exportera loggen i föräldraläget då och då som säkerhetskopia.
+All data sparas lokalt i den installerade appen. Safari och hemskärmsappen delar **inte** data med varandra, så använd alltid samma (hemskärmsappen). Det finns ingen säkerhetskopia just nu, så tar man bort appen börjar övningen om.
 
 ## 6. Testa efter publicering
 
 Det här kunde inte testas lokalt och behöver göras på den publicerade adressen, helst på iPhone 11:
 
-- [ ] **Lighthouse** (Chrome på datorn, DevTools → Lighthouse → Accessibility, Mobile) på `/`, `#/missions`, ett prov, läsningen, `#/report` och `#/parent`. Mål: ≥ 90. Lokalt blev alla 100.
+- [ ] **Lighthouse** (Chrome på datorn, DevTools → Lighthouse → Accessibility, Mobile) på `/`, `#/missions` och ett prov. Mål: ≥ 90. Lokalt blev alla 100.
 - [ ] **VoiceOver** (Inställningar → Hjälpmedel → VoiceOver):
   - Svep genom Idag: rubrik "Idag", Kvackis-texten, knappen "Starta dagens uppdrag".
   - Vid vybyte ska VoiceOver läsa den nya rubriken.
   - På ett kort ska det engelska ordet läsas med engelskt uttal.
   - Feedback från Kvackis ska läsas upp efter ett svar.
-  - Felmeddelandet för sidnummer ska läsas upp tillsammans med fältet.
+  - När man skriver ett svar ska ordet som ska översättas läsas upp tillsammans med fältet.
 - [ ] **Zoom:** Safari → aA → 200 %, och Inställningar → Skärm och ljusstyrka → Textstorlek störst. Inget ska behöva scrollas i sidled.
 - [ ] **Liggande läge:** vrid telefonen. Allt ska fungera.
-- [ ] **Skicka till pappa:** dela-menyn ska öppnas med rapporttexten.
-- [ ] **Kopiera text:** klistra in i Meddelanden.
+- [ ] **Skriva svar:** tangentbordet ska stanna uppe från kort till kort och inte rätta orden automatiskt.
 - [ ] **Lyssna:** uppläsning på engelska och svenska. Beror på vilka röster som är installerade (Inställningar → Hjälpmedel → Uppläst innehåll → Röster).
-- [ ] **Export:** filen ska kunna sparas i Filer. **Import:** välj filen igen.
-- [ ] **PIN:** klistra in en PIN-kod från Anteckningar.
 - [ ] **Återuppta:** börja ett pass, stäng appen helt, öppna igen.

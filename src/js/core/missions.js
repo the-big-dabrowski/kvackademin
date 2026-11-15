@@ -59,7 +59,7 @@ export async function saveProgress(mission, progress, meta = {}) {
 }
 
 export async function complete(mission, meta = {}) {
-  // The title is stored so reports still make sense after the data file changes.
+  // The title is stored so the log still makes sense after the data file changes.
   await logEvent({ missionId: mission.id, type: mission.type, event: EVENTS.DONE, meta: { title: mission.title, ...meta } });
   return saveState(mission.id, { status: STATUS.DONE });
 }
