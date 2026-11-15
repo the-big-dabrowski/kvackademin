@@ -13,6 +13,11 @@ test('syncDeck creates both directions in box 1 and keeps saved progress', () =>
   assert.equal(deck.items['gone:forward'], undefined);
 });
 
+test('a card with directions ["forward"] only gets a forward item', () => {
+  const deck = fc.syncDeck({ items: { 'q:reverse': { box: 2, lastSeen: today } } }, [{ id: 'q', directions: ['forward'] }, { id: 't' }]);
+  assert.deepEqual(Object.keys(deck.items).sort(), ['q:forward', 't:forward', 't:reverse']);
+});
+
 test('known moves up one box, max 3; not yet moves to box 1', () => {
   let deck = fc.syncDeck({}, cards);
   deck = fc.applyAnswer(deck, 'a:forward', true, today);

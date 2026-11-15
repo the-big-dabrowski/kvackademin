@@ -288,3 +288,26 @@ Efter första körningen: att få ut barnets svar krävde antingen flera steg i 
 - Riktiga provdatum och biologibegrepp.
 - När läsdelen ska tillbaka, och då med kontrollfrågor i JSON.
 - Typsnittet (Pixelify Sans) är inte ändrat än.
+
+## Biologiprovet "Den levande planeten" (2026-11-15)
+
+### Vad som gjordes
+- `data/exam-biology.json` ersatt med det riktiga provet: 22 frågor och 24 begrepp i fyra avsnitt. Exempelbegreppen är borta.
+- Filen anpassades lite för att appen ska kunna läsa den: `"answerMode": "self"` i stället för `"self-assessment"`, `"Biologi"` med stor bokstav, samt etiketterna `front` och `back` ("Fråga" och "Svar").
+- **Nytt fält `kinds`:** standardvärden per korttyp. Frågor (`question`) övas bara framåt, eftersom det är svårt att gissa frågan utifrån svaret. Begrepp (`term`) övas åt båda hållen och visas som "Begrepp" och "Förklaring".
+- **Nytt fält `directions`** på kort och i `kinds`, till exempel `["forward"]`. Flashcard-motorn skapar bara de riktningar som kortet tillåter.
+- I flerval tas felalternativ bara från kort av samma `kind`.
+- `examDate` får vara `null` när datumet inte är bestämt.
+- `tests/data.test.js` och `docs/content-guide.md` uppdaterade.
+
+### Kontrollerat
+`npm test` (23 gröna), html-validate. I webbläsaren: 70 övningar (22 frågor framåt plus 24 begrepp åt båda hållen), frågekort med "Fråga/Svar" och begreppskort med "Begrepp/Förklaring".
+
+### Alternativ
+- Använda filen exakt som den klistrades in, med appen ändrad för att läsa `"self-assessment"`. Valdes bort för att svarslägena ska heta likadant i alla filer.
+- Visa avsnittet (`section`) och `tips` i appen. Inte gjort än.
+
+### Kvar för dig att avgöra
+- Provdatum.
+- Om avsnitt och tips ska visas, och om barnet ska kunna välja avsnitt.
+- Ordningen: första dagarna kommer mest frågor, eftersom korten tas i filens ordning. Ska frågor och begrepp blandas?

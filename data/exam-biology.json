@@ -1,19 +1,81 @@
 {
+  "schemaVersion": 1,
   "type": "exam",
-  "id": "biology",
-  "placeholder": true,
-  "placeholderNote": "PLACEHOLDER: exempelbegrepp. Byt ut mot riktiga begrepp, förklaringar och provdatum från skolan.",
+  "id": "biologi-den-levande-planeten",
   "subject": "Biologi",
-  "title": "Biologibegrepp (exempel)",
-  "examDate": "PLACEHOLDER",
-  "front": { "label": "Begrepp", "lang": "sv" },
-  "back": { "label": "Förklaring", "lang": "sv" },
-  "answerMode": "choice",
+  "title": "Den levande planeten",
+  "examDate": null,
+  "front": { "label": "Fråga", "lang": "sv" },
+  "back": { "label": "Svar", "lang": "sv" },
+  "answerMode": "self",
+  "kinds": {
+    "question": { "directions": ["forward"] },
+    "term": { "frontLabel": "Begrepp", "backLabel": "Förklaring" }
+  },
+  "sections": [
+    { "id": "celler", "title": "Celler" },
+    { "id": "fotosyntes", "title": "Fotosyntes och cellandning" },
+    { "id": "vaxter", "title": "Växter och pollinering" },
+    { "id": "barrtrad-svampar", "title": "Barrträd och svampar" }
+  ],
   "cards": [
-    { "id": "photosynthesis", "front": "fotosyntes", "back": "När växter gör socker av solljus, vatten och koldioxid" },
-    { "id": "food-chain", "front": "näringskedja", "back": "Vem som äter vem i naturen" },
-    { "id": "predator", "front": "rovdjur", "back": "Ett djur som jagar och äter andra djur" },
-    { "id": "herbivore", "front": "växtätare", "back": "Ett djur som bara äter växter" },
-    { "id": "decomposer", "front": "nedbrytare", "back": "Liv som bryter ner döda växter och djur till jord" }
+    { "id": "q01", "kind": "question", "section": "celler", "front": "Vad är en cell?", "back": "En cell är en mycket liten byggsten som levande organismer består av." },
+    { "id": "q02", "kind": "question", "section": "celler", "front": "Vilka tre celltyper har ni lärt er om?", "back": "Djurceller, växtceller och svampceller." },
+    { "id": "q03", "kind": "question", "section": "celler", "front": "Vad är speciellt med växtceller jämfört med djurceller?", "back": "Växtceller har cellvägg och gröna kloroplaster där fotosyntesen sker." },
+    { "id": "q04", "kind": "question", "section": "celler", "front": "Vad har svampceller och växtceller gemensamt?", "back": "Båda har cellvägg. Svampceller saknar kloroplaster." },
+
+    { "id": "q05", "kind": "question", "section": "fotosyntes", "front": "Vilka tre saker behöver växten för att kunna utföra fotosyntes?", "back": "Solljus (ljusenergi), vatten och koldioxid." },
+    { "id": "q06", "kind": "question", "section": "fotosyntes", "front": "Vilka två ämnen bildas vid fotosyntesen?", "back": "Druvsocker och syre." },
+    { "id": "q07", "kind": "question", "section": "fotosyntes", "front": "Varför är fotosyntesen viktig för människor och djur?", "back": "Fotosyntesen ger syre och bygger upp socker som blir energi och näring i näringskedjor." },
+    { "id": "q08", "kind": "question", "section": "fotosyntes", "front": "Vad behöver cellerna vid cellandningen?", "back": "Druvsocker och syre." },
+    { "id": "q09", "kind": "question", "section": "fotosyntes", "front": "Vad bildas vid cellandningen?", "back": "Koldioxid, vatten och frigjord energi." },
+    { "id": "q10", "kind": "question", "section": "fotosyntes", "front": "Vad använder kroppen energin från cellandningen till?", "back": "Till exempel rörelse, tillväxt och att hålla kroppen igång." },
+
+    { "id": "q11", "kind": "question", "section": "vaxter", "front": "Vad är skillnaden mellan en fröväxt och en sporväxt?", "back": "Fröväxter bildar frön, sporväxter sprider sig med sporer." },
+    { "id": "q12", "kind": "question", "section": "vaxter", "front": "Ge två exempel på fröväxter och två på sporväxter.", "back": "Fröväxter: maskros och gran. Sporväxter: mossa och ormbunke." },
+    { "id": "q13", "kind": "question", "section": "vaxter", "front": "Vad betyder pollinering?", "back": "Pollen flyttas från en ståndare till en pistills märke." },
+    { "id": "q14", "kind": "question", "section": "vaxter", "front": "Vad gör ståndaren i blomman?", "back": "Ståndaren bildar pollen." },
+    { "id": "q15", "kind": "question", "section": "vaxter", "front": "Vad gör pistillen och fruktämnet?", "back": "Pistillen tar emot pollen. Fruktämnet innehåller fröämnen och kan utvecklas till frukt efter befruktning." },
+    { "id": "q16", "kind": "question", "section": "vaxter", "front": "Hur kan pollen flyttas mellan blommor?", "back": "Till exempel med insekter eller vind." },
+    { "id": "q17", "kind": "question", "section": "vaxter", "front": "Hur kan frön spridas till nya platser?", "back": "Med vind, vatten eller djur." },
+
+    { "id": "q18", "kind": "question", "section": "barrtrad-svampar", "front": "Vad är skillnaden mellan en hankotte och en honkotte?", "back": "Hankotten bildar pollen. Honkotten har fröämnen och kan utveckla frön." },
+    { "id": "q19", "kind": "question", "section": "barrtrad-svampar", "front": "Vad är sporer och hur använder svampar dem?", "back": "Sporer är små förökningsenheter som kan växa till nya svampar." },
+    { "id": "q20", "kind": "question", "section": "barrtrad-svampar", "front": "Vilka delar kan man se på en typisk hattsvamp ovan jord?", "back": "Hatt och fot, ofta skivor under hatten." },
+    { "id": "q21", "kind": "question", "section": "barrtrad-svampar", "front": "Vad är mycel och var finns det oftast?", "back": "Mycel är ett nätverk av tunna svamptrådar, oftast i marken eller i ved." },
+    { "id": "q22", "kind": "question", "section": "barrtrad-svampar", "front": "Varför är svampar viktiga i naturen?", "back": "Många svampar är nedbrytare som bryter ner dött material och återför näringsämnen." },
+
+    { "id": "t01", "kind": "term", "section": "fotosyntes", "front": "Fotosyntes", "back": "Växten använder ljus, vatten och koldioxid för att bilda druvsocker och syre." },
+    { "id": "t02", "kind": "term", "section": "fotosyntes", "front": "Vatten", "back": "Växten tar upp vatten med rötterna." },
+    { "id": "t03", "kind": "term", "section": "fotosyntes", "front": "Koldioxid", "back": "Gas i luften som växten behöver vid fotosyntesen." },
+    { "id": "t04", "kind": "term", "section": "fotosyntes", "front": "Syre", "back": "Gas som bildas vid fotosyntesen och som vi andas in." },
+    { "id": "t05", "kind": "term", "section": "fotosyntes", "front": "Druvsocker", "back": "Socker som växten bildar och använder som energi och byggmaterial." },
+    { "id": "t06", "kind": "term", "section": "fotosyntes", "front": "Cellandning", "back": "Celler använder druvsocker och syre för att frigöra energi." },
+
+    { "id": "t07", "kind": "term", "section": "celler", "front": "Cell", "back": "En liten byggsten i levande organismer." },
+    { "id": "t08", "kind": "term", "section": "celler", "front": "Växtcell", "back": "Cell med cellvägg och ofta kloroplaster." },
+    { "id": "t09", "kind": "term", "section": "celler", "front": "Djurcell", "back": "Cell utan cellvägg och kloroplaster." },
+    { "id": "t10", "kind": "term", "section": "celler", "front": "Svampcell", "back": "Cell med cellvägg men utan kloroplaster." },
+    { "id": "t11", "kind": "term", "section": "celler", "front": "Kloroplaster", "back": "Gröna delar i växtcellen där fotosyntesen sker." },
+
+    { "id": "t12", "kind": "term", "section": "vaxter", "front": "Fröväxt", "back": "Växt som förökar sig med frön." },
+    { "id": "t13", "kind": "term", "section": "vaxter", "front": "Sporväxt", "back": "Växt som förökar sig med sporer, till exempel mossa." },
+    { "id": "t14", "kind": "term", "section": "vaxter", "front": "Pollinering", "back": "Pollen flyttas från ståndare till pistill." },
+    { "id": "t15", "kind": "term", "section": "vaxter", "front": "Ståndare", "back": "Blommans del som bildar pollen." },
+    { "id": "t16", "kind": "term", "section": "vaxter", "front": "Pistill", "back": "Blommans del som tar emot pollen." },
+    { "id": "t17", "kind": "term", "section": "vaxter", "front": "Fruktämne", "back": "Del av pistillen som kan utvecklas till frukt." },
+
+    { "id": "t18", "kind": "term", "section": "barrtrad-svampar", "front": "Hankotte", "back": "Kotte som bildar pollen." },
+    { "id": "t19", "kind": "term", "section": "barrtrad-svampar", "front": "Honkotte", "back": "Kotte där frön kan utvecklas." },
+
+    { "id": "t20", "kind": "term", "section": "vaxter", "front": "Fröspridning", "back": "Frön flyttas med vind, vatten eller djur." },
+
+    { "id": "t21", "kind": "term", "section": "barrtrad-svampar", "front": "Sporer", "back": "Små delar som kan växa till nya svampar." },
+    { "id": "t22", "kind": "term", "section": "barrtrad-svampar", "front": "Hatt och fot", "back": "Delar av en hattsvamp som syns ovan jord." },
+    { "id": "t23", "kind": "term", "section": "barrtrad-svampar", "front": "Mycel", "back": "Nätverk av svamptrådar, oftast under marken." },
+    { "id": "t24", "kind": "term", "section": "barrtrad-svampar", "front": "Nedbrytare", "back": "Organism som bryter ner döda växter och djur." }
+  ],
+  "tips": [
+    "Fotosyntes: ljus + vatten + koldioxid → druvsocker + syre"
   ]
 }

@@ -54,7 +54,17 @@ function planSession(exam, deck, today) {
   });
 }
 
-function getMissions(exam, ctx) {
+/**
+ * Cards can have a `kind` (e.g. "question" or "term"). The exam's `kinds` field gives
+ * defaults per kind, such as labels or `directions`; fields on the card win.
+ */
+export function withKindDefaults(exam) {
+  if (!exam.kinds || !Array.isArray(exam.cards)) return exam;
+  return { ...exam, cards: exam.cards.map((card) => ({ ...exam.kinds[card.kind], ...card })) };
+}
+
+function getMissions(rawExam, ctx) {
+  const exam = withKindDefaults(rawExam);
   const days = daysUntil(ctx.today, exam.examDate);
   if (days !== null && days < 0) return [];
   if (!Array.isArray(exam.cards) || exam.cards.length === 0) return [];

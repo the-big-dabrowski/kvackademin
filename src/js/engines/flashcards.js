@@ -2,7 +2,8 @@
  * Leitner flashcards engine. Pure functions: no DOM, no storage.
  *
  * - 3 boxes. New cards start in box 1.
- * - Both directions: every card becomes two items ("front -> back" and "back -> front").
+ * - Both directions: every card becomes two items ("front -> back" and "back -> front"),
+ *   unless the card limits it with `directions`, e.g. ["forward"] for open questions.
  * - Known answer moves the item up one box, "not yet" moves it back to box 1.
  * - Higher boxes are reviewed less often (see REVIEW_INTERVAL_DAYS).
  *
@@ -39,11 +40,18 @@ export function daysBetween(fromISO, toISO) {
   return Math.round((toUTC(toISO) - toUTC(fromISO)) / 86400000);
 }
 
+/** The directions a card is practised in. Defaults to both. */
+export function cardDirections(card) {
+  const chosen = DIRECTIONS.filter((d) => card.directions?.includes(d));
+  return chosen.length ? chosen : [...DIRECTIONS];
+}
+
 /** Make sure the deck has exactly one item per card and direction, keeping saved progress. */
 export function syncDeck(saved, cards) {
   const items = {};
   for (const direction of DIRECTIONS) {
     for (const card of cards) {
+      if (!cardDirections(card).includes(direction)) continue;
       const key = itemKey(card.id, direction);
       items[key] = saved?.items?.[key] ?? { box: 1, lastSeen: null };
     }

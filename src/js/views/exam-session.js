@@ -34,9 +34,11 @@ export function createExamSessionView(api) {
       let leaving = false;
       let praiseIndex = 0;
 
-      const sides = (direction) => (direction === 'forward'
-        ? { prompt: exam.front, answer: exam.back, promptKey: 'front', answerKey: 'back' }
-        : { prompt: exam.back, answer: exam.front, promptKey: 'back', answerKey: 'front' });
+      // A card may override the side labels, e.g. "Begrepp" instead of "Fråga".
+      const sideInfo = (card, key) => ({ ...exam[key], label: card[`${key}Label`] ?? exam[key].label });
+      const sides = (direction, card) => (direction === 'forward'
+        ? { prompt: sideInfo(card, 'front'), answer: sideInfo(card, 'back'), promptKey: 'front', answerKey: 'back' }
+        : { prompt: sideInfo(card, 'back'), answer: sideInfo(card, 'front'), promptKey: 'back', answerKey: 'front' });
 
       // ---- Static frame -------------------------------------------------
       const feedback = h('p', { class: 'feedback', 'aria-live': 'polite', 'data-js': 'feedback' });
@@ -152,7 +154,7 @@ export function createExamSessionView(api) {
         const key = fc.currentKey(progress.session);
         const { cardId, direction } = fc.parseItemKey(key);
         const card = exam.cards.find((c) => c.id === cardId);
-        const side = sides(direction);
+        const side = sides(direction, card);
         const promptText = card[side.promptKey];
         const answerText = card[side.answerKey];
         const mode = modeFor(card, direction);
@@ -257,7 +259,7 @@ export function createExamSessionView(api) {
         if (mode === 'choice') {
           const choices = buildChoices(answerText, {
             custom: asList(card[`choices${extra}`]),
-            pool: exam.cards.filter((c) => c.id !== card.id).map((c) => c[side.answerKey]),
+            pool: exam.cards.filter((c) => c.id !== card.id && c.kind === card.kind).map((c) => c[side.answerKey]),
             seed: key,
           });
           const questionId = `choice-question-${progress.session.position}`;
