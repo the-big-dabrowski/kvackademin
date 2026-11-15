@@ -86,7 +86,7 @@ I ett ämnesprov kan korten vara av olika slag, till exempel öppna frågor och 
 "back": { "label": "Svar", "lang": "sv" },
 "kinds": {
   "question": { "directions": ["forward"] },
-  "term": { "frontLabel": "Begrepp", "backLabel": "Förklaring" }
+  "term": { "frontLabel": "Begrepp", "backLabel": "Förklaring", "perSession": 5 }
 },
 "cards": [
   { "id": "q01", "kind": "question", "front": "Vad är en cell?", "back": "En liten byggsten…" },
@@ -97,6 +97,7 @@ I ett ämnesprov kan korten vara av olika slag, till exempel öppna frågor och 
 - **Frågor** övas bara åt ett håll. Det är svårt att gissa frågan utifrån svaret.
 - **Begrepp** övas åt båda hållen och visas som "Begrepp" och "Förklaring" i stället för "Fråga" och "Svar".
 - I flerval tas felalternativen bara från kort av samma slag.
+- **`perSession`** ger ett slag ett fast antal kort per pass, utöver de andra. Med `"term": { "perSession": 5 }` får varje pass upp till 20 frågor plus 5 begrepp. Frågorna prioriteras alltså, och begreppen blir aldrig fler än 5.
 - Långa svar passar bäst med `"answerMode": "self"`. Att skriva en hel mening rättas inte rättvist.
 - `section` och `tips` sparas i filen men visas inte i appen än.
 

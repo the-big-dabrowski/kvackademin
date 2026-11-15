@@ -105,15 +105,31 @@ function seededShuffle(list, seedText) {
 /**
  * Pick today's items: lowest box first, unseen before oldest seen.
  * Items that are equal on that are mixed (same mix all day).
+ *
+ * Optional quotas: `groupOf(key)` names an item's group (e.g. the card kind) and
+ * `quota[group]` is how many items of that group are added on top of `maxItems`.
+ * Groups without a quota share `maxItems`. A quota group never gets more than its quota.
+ *
  * If nothing is due, return a short light review of the weakest items.
  */
-export function pickSession(deck, { today, maxItems, examSoon = false }) {
+export function pickSession(deck, { today, maxItems, examSoon = false, quota = {}, groupOf = () => null }) {
   // Array.prototype.sort is stable, so the shuffled order is kept between equal items.
   const entries = seededShuffle(Object.entries(deck.items), today);
   const order = (a, b) => a[1].box - b[1].box || (a[1].lastSeen ?? '').localeCompare(b[1].lastSeen ?? '');
   const due = entries.filter(([, e]) => isDue(e, today, examSoon)).sort(order);
-  const pool = due.length ? due.slice(0, maxItems) : [...entries].sort(order).slice(0, REVIEW_SIZE);
-  return spreadOut(pool.map(([key]) => key));
+  if (!due.length) return spreadOut([...entries].sort(order).slice(0, REVIEW_SIZE).map(([key]) => key));
+
+  const hasQuota = ([key]) => Number.isInteger(quota[groupOf(key)]);
+  const main = due.filter((e) => !hasQuota(e)).slice(0, maxItems);
+  const taken = {};
+  const extra = due.filter((entry) => {
+    if (!hasQuota(entry)) return false;
+    const group = groupOf(entry[0]);
+    taken[group] = (taken[group] ?? 0) + 1;
+    return taken[group] <= quota[group];
+  });
+  const keys = [...main, ...extra].map(([key]) => key);
+  return spreadOut(seededShuffle(keys, `${today}|order`));
 }
 
 export function applyAnswer(deck, key, known, today) {

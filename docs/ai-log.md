@@ -327,3 +327,20 @@ Efter första körningen: att få ut barnets svar krävde antingen flera steg i 
 
 ### Kvar för dig att avgöra
 - Om frågorna ska prioriteras före provet. Just nu är andelen slumpmässig och följer antalet kort: 22 av 70 övningar är frågor.
+
+## Frågor först, 5 begrepp per pass (2026-11-15)
+
+### Vad som gjordes
+- **Nytt fält `perSession` i `kinds`:** ett slag kort får ett fast antal platser per pass, utöver det vanliga taket på 20. Biologi: `"term": { …, "perSession": 5 }`.
+- `pickSession` tar emot `quota` och `groupOf`. Kort utan kvot delar på de 20 platserna, och ett slag med kvot får aldrig fler än sin kvot. Hela passet blandas till sist, så att begreppen inte hamnar sist.
+- Tidsuppskattningen räknas från antalet kort (30 sekunder per kort). Biologi visar "Ungefär 13 min" för 25 kort i stället för "10 minuter".
+
+### Kontrollerat
+`npm test` (25 gröna). Simulering fram till provet: 15/11 20+5, 16/11 8+5 (de flesta frågor är inte aktuella dagen efter enligt Leitner), 17–19/11 20+5. Introt i webbläsaren: "Ungefär 13 minuter, 25 kort."
+
+### Alternativ
+- Låta begreppen fylla upp passet när få frågor är aktuella. Valdes bort, eftersom du bad om 5 begrepp per tillfälle.
+- 15 frågor + 5 begrepp så att passet stannar på 20 kort. Valdes bort, eftersom "utöver frågorna" lästes som att begreppen kommer till.
+
+### Kvar för dig att avgöra
+- Med 5 begrepp om dagen hinner barnet se ungefär 25 av de 48 begreppsövningarna före provet.

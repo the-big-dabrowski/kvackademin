@@ -10,7 +10,7 @@
   "answerMode": "self",
   "kinds": {
     "question": { "directions": ["forward"] },
-    "term": { "frontLabel": "Begrepp", "backLabel": "Förklaring" }
+    "term": { "frontLabel": "Begrepp", "backLabel": "Förklaring", "perSession": 5 }
   },
   "sections": [
     { "id": "celler", "title": "Celler" },

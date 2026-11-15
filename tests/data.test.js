@@ -46,6 +46,8 @@ for (const file of readdirSync(DATA).filter((f) => f.startsWith('exam-') && f.en
       assert.ok(isDirections(defaults.directions), at('"directions" must be like ["forward"]'));
       assert.ok(isLabel(defaults.frontLabel) && isLabel(defaults.backLabel), at('labels must be text'));
       assert.ok(isMode(defaults.answerMode), at('"answerMode" is not valid'));
+      assert.ok(defaults.perSession === undefined || (Number.isInteger(defaults.perSession) && defaults.perSession >= 0),
+        at('"perSession" must be a whole number, like 5'));
     }
     for (const side of ['front', 'back']) {
       assert.ok(isText(exam[side]?.label) && isText(exam[side]?.lang), where(`"${side}" needs "label" and "lang"`));

@@ -21,7 +21,7 @@ const NOT_YET_LATER = 'Ingen fara! Vi övar mer på det kortet en annan dag.';
  * View that runs one exam mission: intro → one card at a time → done.
  * Progress is saved after every answer so an interrupted session can be resumed.
  *
- * `api` comes from the exam module: { loadDeck, saveDeck, planSession, daysUntil, daysLeftText }.
+ * `api` comes from the exam module: { loadDeck, saveDeck, planSession, daysUntil, daysLeftText, minutesFor }.
  */
 export function createExamSessionView(api) {
   return {
@@ -132,7 +132,7 @@ export function createExamSessionView(api) {
           h('h2', {}, resuming ? 'Välkommen tillbaka!' : 'Dagens pass'),
           h('p', {}, resuming
             ? `Du har redan övat på ${new Set(progress.session.queue.slice(0, progress.session.position)).size} av ${count} kort. Allt är sparat, så vi fortsätter där du slutade.`
-            : `Ungefär ${mission.estimatedMinutes} minuter, ${count} kort. Vi börjar med ett enda kort.`),
+            : `Ungefär ${api.minutesFor(count)} minuter, ${count} kort. Vi börjar med ett enda kort.`),
           startButton,
           h('p', {}, h('a', { class: 'text-link', href: '#/missions' }, 'Tillbaka till uppdragen')),
         );

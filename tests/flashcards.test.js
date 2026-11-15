@@ -60,6 +60,22 @@ test('pickSession mixes the order but keeps it the same all day', () => {
   assert.equal(new Set(first).size, 20);
 });
 
+test('pickSession quota adds a fixed number of one group on top of maxItems', () => {
+  const qs = Array.from({ length: 30 }, (_, i) => ({ id: `q${i}`, directions: ['forward'] }));
+  const ts = Array.from({ length: 10 }, (_, i) => ({ id: `t${i}` }));
+  const deck = fc.syncDeck({}, [...qs, ...ts]);
+  const groupOf = (key) => key[0];
+  const keys = fc.pickSession(deck, { today, maxItems: 20, quota: { t: 5 }, groupOf });
+  assert.equal(keys.filter((k) => k.startsWith('q')).length, 20);
+  assert.equal(keys.filter((k) => k.startsWith('t')).length, 5);
+
+  // Few questions due: still only 5 of the quota group.
+  const small = fc.syncDeck({}, [...qs.slice(0, 3), ...ts]);
+  const mixed = fc.pickSession(small, { today, maxItems: 20, quota: { t: 5 }, groupOf });
+  assert.equal(mixed.filter((k) => k.startsWith('q')).length, 3);
+  assert.equal(mixed.filter((k) => k.startsWith('t')).length, 5);
+});
+
 test('pickSession gives a light review when nothing is due', () => {
   let deck = fc.syncDeck({}, cards);
   for (const key of Object.keys(deck.items)) deck = fc.applyAnswer(deck, key, true, today);

@@ -13,6 +13,15 @@ export const MAX_ITEMS = Math.round((SESSION_MINUTES * 60) / SECONDS_PER_ITEM);
 /** From this many days before the exam, every item not seen today is due. */
 const EXAM_SOON_DAYS = 2;
 
+export function minutesFor(itemCount) {
+  return Math.max(1, Math.round((itemCount * SECONDS_PER_ITEM) / 60));
+}
+
+/** Extra items per session from `perSession` in `kinds`. */
+function extraPerSession(exam) {
+  return Object.values(exam.kinds ?? {}).reduce((sum, d) => sum + (Number.isInteger(d.perSession) ? d.perSession : 0), 0);
+}
+
 /** Returns a Date for a valid "YYYY-MM-DD" string, otherwise null (e.g. "PLACEHOLDER"). */
 export function parseISODate(value) {
   if (!/^\d{4}-\d{2}-\d{2}$/.test(value ?? '')) return null;
@@ -47,10 +56,17 @@ async function saveDeck(exam, deck) {
 
 function planSession(exam, deck, today) {
   const days = daysUntil(today, exam.examDate);
+  // "perSession" in `kinds` gives that kind a fixed number of items on top of the others.
+  const quota = Object.fromEntries(Object.entries(exam.kinds ?? {})
+    .filter(([, d]) => Number.isInteger(d.perSession))
+    .map(([kind, d]) => [kind, d.perSession]));
+  const kindOf = new Map(exam.cards.map((c) => [c.id, c.kind]));
   return fc.pickSession(deck, {
     today,
     maxItems: MAX_ITEMS,
     examSoon: days !== null && days <= EXAM_SOON_DAYS,
+    quota,
+    groupOf: (key) => kindOf.get(fc.parseItemKey(key).cardId) ?? null,
   });
 }
 
@@ -74,7 +90,7 @@ function getMissions(rawExam, ctx) {
     title: exam.title,
     subject: exam.subject,
     summary: daysLeftText(days),
-    estimatedMinutes: SESSION_MINUTES,
+    estimatedMinutes: minutesFor(MAX_ITEMS + extraPerSession(exam)),
     placeholder: Boolean(exam.placeholder),
     today: ctx.today,
     exam,
@@ -90,5 +106,5 @@ export default {
   label: 'Prov',
   getMissions,
   summarize,
-  view: createExamSessionView({ loadDeck, saveDeck, planSession, daysUntil, daysLeftText }),
+  view: createExamSessionView({ loadDeck, saveDeck, planSession, daysUntil, daysLeftText, minutesFor }),
 };
