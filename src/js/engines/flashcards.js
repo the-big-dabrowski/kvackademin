@@ -16,7 +16,7 @@ export const BOX_COUNT = 3;
 export const DIRECTIONS = Object.freeze(['forward', 'reverse']);
 export const REVIEW_INTERVAL_DAYS = Object.freeze({ 1: 1, 2: 2, 3: 4 });
 /** How many extra tries a "not yet" item gets within one session. */
-export const MAX_RETRIES = 2;
+export const MAX_RETRIES = 3;
 /** How many other items come before a retried item shows up again. */
 export const RETRY_GAP = 3;
 /** Items in a light review session when nothing is due. */
@@ -132,6 +132,16 @@ export function pickSession(deck, { today, maxItems, examSoon = false, quota = {
   return spreadOut(seededShuffle(keys, `${today}|order`));
 }
 
+/** Mix item keys with a seed and keep two directions of a card apart. */
+export function mixKeys(keys, seed) {
+  return spreadOut(seededShuffle(keys, seed));
+}
+
+/** Every item in the deck once, mixed (same mix all day). Used when a session covers the whole exam. */
+export function pickAll(deck, { today }) {
+  return mixKeys(Object.keys(deck.items), today);
+}
+
 export function applyAnswer(deck, key, known, today) {
   const current = deck.items[key] ?? { box: 1, lastSeen: null };
   const box = known ? Math.min(current.box + 1, BOX_COUNT) : 1;
@@ -148,6 +158,17 @@ export function currentKey(session) {
 
 export function isFinished(session) {
   return session.position >= session.queue.length;
+}
+
+/** Items left in the session, including retries already queued. */
+export function remainingCount(session) {
+  return Math.max(0, session.queue.length - session.position);
+}
+
+/** Items answered right the first time they were shown. */
+export function firstTryCount(session) {
+  const missed = Object.values(session.retries ?? {}).filter((n) => n > 0).length;
+  return uniqueCount(session) - missed;
 }
 
 /** Number of different items in the session (retries not counted twice). */

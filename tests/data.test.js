@@ -53,6 +53,7 @@ for (const file of readdirSync(DATA).filter((f) => f.startsWith('exam-') && f.en
       assert.ok(isText(exam[side]?.label) && isText(exam[side]?.lang), where(`"${side}" needs "label" and "lang"`));
     }
     assert.ok(isMode(exam.answerMode), where(`"answerMode" must be one of ${ANSWER_MODES.join(', ')}`));
+    assert.ok([undefined, 'all', 'due'].includes(exam.session), where('"session" must be "all" or "due"'));
     assert.ok(Array.isArray(exam.cards) && exam.cards.length > 0, where('"cards" needs at least one card'));
 
     const ids = new Set();

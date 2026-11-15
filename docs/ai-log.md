@@ -344,3 +344,25 @@ Efter första körningen: att få ut barnets svar krävde antingen flera steg i 
 
 ### Kvar för dig att avgöra
 - Med 5 begrepp om dagen hinner barnet se ungefär 25 av de 48 begreppsövningarna före provet.
+
+## Hela listan per pass, flerval i biologi, klar-skärm och startknapp (2026-11-15)
+
+### Vad som gjordes
+- **Passen var inte inställda på tid.** Ett glospass hade 20 övningar (10 ord åt båda hållen) plus omförsök. Förloppet visade "Nytt försök på ett kort du har sett" utan att säga hur mycket som var kvar, och det kändes som att det aldrig tog slut.
+- **`"session": "all"` är standard:** varje ord en gång åt varje håll, sedan är passet klart. Biologin har `"session": "due"` och behåller "upp till 20 frågor + 5 begrepp".
+- **Omförsök:** `MAX_RETRIES` höjt från 2 till 3. Förloppet visar alltid hur många kort som är kvar, till exempel "Kort 4 av 20. 19 kort kvar." eller "Nytt försök (2 av 3) … 3 kort kvar."
+- **Flerval:** biologin använder `"answerMode": "choice"`. Svarsalternativen blandas om vid varje nytt försök, så att rätt svar inte kan kommas ihåg genom sin plats.
+- **Klar-skärm:** Kvackis (bild) säger slumpvis "Bra jobbat!", "Kvack-taktiskt!" eller "Kvack ska du ha!". Under står "X av Y rätt på första försöket" i grönt, med en bock och texten utskriven, så att färgen aldrig är det enda som bär informationen. Komponent: `components/_cheer.scss`.
+- **Knappar efter passet:** en grön primärknapp "Klar" (till Uppdrag) och en sekundär "Gör om". Gör om kör samma kort i ny ordning. Uppdraget förblir klart, och framstegen sparas ändå efter varje svar (`saveProgress` behåller statusen "klar").
+- **Startknappen** leder till Uppdrag, där barnet själv väljer.
+
+### Kontrollerat
+`npm test` (27 gröna), html-validate. I webbläsaren: hela glosflödet med två fel (22 steg, 18 av 20 på första försöket), Gör om, flerval i biologin med 25 kort, återupptagning. axe ger 0 fel på klar-skärmen och det finns ingen sidscroll vid 320 px. Fokus hamnar på Kvackis-rubriken.
+
+### Alternativ
+- Visa totalt antal rätt (även efter omförsök) i stället för rätt på första försöket. Med upp till 3 omförsök blir nästan allt rätt till slut, så det säger mindre.
+- Låta biologin blanda flerval och självskattning, till exempel flerval för begrepp och självskattning för frågor. Nu är allt flerval.
+
+### Kvar för dig att avgöra
+- CLAUDE.md säger att belöning aldrig ska ges för antal rätt. Antalet rätt visas nu som information, utan belöning. Vill du att det skrivs in i CLAUDE.md?
+- Om "Klar" ska gå till Uppdrag (nu) eller till Idag.

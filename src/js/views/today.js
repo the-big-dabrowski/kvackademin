@@ -1,23 +1,10 @@
 import { h, icon, ICONS } from './dom.js';
-import { navigate } from '../core/router.js';
 import { getTodaysMissions, STATUS } from '../core/missions.js';
-import { nextMission } from './missions.js';
 
+// Leads to the missions page, where the child chooses which mission to start with.
 function startButton() {
-  return h('button', {
-    type: 'button',
-    class: 'button button--large',
-    'data-js': 'start-missions',
-    onclick: async () => {
-      // Go straight to the first unfinished mission: the first step stays small.
-      try {
-        const next = nextMission(await getTodaysMissions());
-        navigate(next ? `/missions/${encodeURIComponent(next.id)}` : '/missions');
-      } catch {
-        navigate('/missions');
-      }
-    },
-  }, icon(ICONS.play), 'Starta dagens uppdrag');
+  return h('a', { class: 'button button--large', href: '#/missions', 'data-js': 'start-missions' },
+    icon(ICONS.play), 'Starta dagens uppdrag');
 }
 
 /** "Idag" (today) view: the start screen with a single primary action. */

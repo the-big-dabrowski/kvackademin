@@ -5,7 +5,6 @@ import * as fc from '../engines/flashcards.js';
 import { isSpeechSupported, speak, stopSpeaking } from '../lib/speech.js';
 import { createClock, elapsedText, PAUSE_SUGGESTION_MS } from '../lib/clock.js';
 import { pauseNotice, PAUSE_ANNOUNCEMENT } from './pause-notice.js';
-import { missionDoneFooter } from './mission-done.js';
 import { ANSWER_MODES, checkTyped, buildChoices } from '../lib/answers.js';
 
 const PRAISE = [
@@ -16,6 +15,8 @@ const PRAISE = [
 ];
 const NOT_YET_RETRY = 'Ingen fara! Det kortet kommer tillbaka lite senare, så får du försöka igen.';
 const NOT_YET_LATER = 'Ingen fara! Vi övar mer på det kortet en annan dag.';
+/** Kvackis at the end of a session. Picked at random, so it varies. */
+const DONE_CHEERS = ['Bra jobbat!', 'Kvack-taktiskt!', 'Kvack ska du ha!'];
 
 /**
  * View that runs one exam mission: intro → one card at a time → done.
@@ -100,13 +101,17 @@ export function createExamSessionView(api) {
         }, icon(ICONS.speaker), 'Lyssna');
       }
 
-      // Retries do not grow the total, so the session never seems to get longer.
+      // Shows how far there is to go, including cards that come back for a new try.
       function progressText(session) {
         const key = fc.currentKey(session);
         const before = session.queue.slice(0, session.position);
-        if (before.includes(key)) return 'Nytt försök på ett kort du har sett.';
+        const left = fc.remainingCount(session);
+        const leftText = left === 1 ? 'Sista kortet!' : `${left} kort kvar.`;
+        if (before.includes(key)) {
+          return `Nytt försök (${session.retries[key]} av ${fc.MAX_RETRIES}) på ett kort du har sett. ${leftText}`;
+        }
         const seen = new Set(before).size;
-        return `Kort ${seen + 1} av ${fc.uniqueCount(session)}`;
+        return `Kort ${seen + 1} av ${fc.uniqueCount(session)}. ${leftText}`;
       }
 
       function showIntro() {
@@ -260,7 +265,8 @@ export function createExamSessionView(api) {
           const choices = buildChoices(answerText, {
             custom: asList(card[`choices${extra}`]),
             pool: exam.cards.filter((c) => c.id !== card.id && c.kind === card.kind).map((c) => c[side.answerKey]),
-            seed: key,
+            // A new order on every try, so the right answer is not remembered by its place.
+            seed: `${key}|${progress.session.retries[key] ?? 0}`,
           });
           const questionId = `choice-question-${progress.session.position}`;
           answerArea.append(
@@ -337,31 +343,61 @@ export function createExamSessionView(api) {
       async function finish() {
         stopClock();
         const practiced = fc.uniqueCount(progress.session);
-        await missions.complete(mission, { practiced, minutes: Math.round(progress.elapsedMs / 60000) });
-        await showDone(practiced);
+        await missions.complete(mission, {
+          practiced,
+          firstTry: fc.firstTryCount(progress.session),
+          minutes: Math.round(progress.elapsedMs / 60000),
+          ...(progress.redo ? { redo: true } : {}),
+        });
+        showDone({ focus: true });
       }
 
-      async function showDone(practiced) {
+      /** Do the same cards again. The mission stays done; progress is still autosaved. */
+      async function redo() {
+        const keys = [...new Set(progress.session.queue)];
+        progress = {
+          session: fc.createSession(fc.mixKeys(keys, `${today}|redo|${Date.now()}`)),
+          elapsedMs: 0,
+          pauseOffered: false,
+          redo: true,
+        };
+        clock = null;
+        await missions.saveProgress(mission, progress, { action: 'redo' });
+        startClock();
+        showCard({ focus: 'prompt' });
+      }
+
+      function showDone({ focus = false } = {}) {
         pauseBox.replaceChildren();
-        const heading = h('h2', { tabindex: '-1' }, 'Klart för idag!');
+        feedback.replaceChildren(); // Kvackis' last answer feedback is replaced by the cheer.
+        const session = progress?.session;
+        const cheer = DONE_CHEERS[Math.floor(Math.random() * DONE_CHEERS.length)];
+        const heading = h('h2', { class: 'cheer__title', tabindex: '-1' }, cheer);
         stage.replaceChildren(
-          heading,
-          h('p', {}, h('strong', {}, 'Kvackis: '), `Vad bra att du övade! Du gick igenom ${practiced} kort idag. Det är så man lär sig.`),
-          ...(await missionDoneFooter()),
+          h('div', { class: 'cheer' },
+            h('img', { class: 'cheer__image', src: 'img/logo.png', alt: '', width: '192', height: '192' }),
+            h('div', { class: 'cheer__bubble' },
+              h('p', { class: 'cheer__speaker' }, 'Kvackis säger:'),
+              heading,
+              session
+                ? h('p', { class: 'cheer__score' }, icon(ICONS.check, 'cheer__score-icon'),
+                  h('span', {}, `${fc.firstTryCount(session)} av ${fc.uniqueCount(session)} rätt på första försöket`))
+                : null)),
+          h('div', { class: 'session__actions' },
+            h('a', { class: 'button button--large button--success', href: '#/missions', 'data-js': 'done' },
+              icon(ICONS.check), 'Klar'),
+            session
+              ? h('button', { type: 'button', class: 'button button--secondary', 'data-js': 'redo', onclick: redo }, 'Gör om')
+              : null),
         );
-        heading.focus();
+        if (focus) heading.focus();
       }
 
       // ---- Start --------------------------------------------------------
-      if (saved.status === missions.STATUS.DONE) {
-        stage.replaceChildren(
-          h('h2', {}, 'Klart för idag!'),
-          h('p', {}, h('strong', {}, 'Kvackis: '), 'Det här uppdraget är redan klart för idag. Bra jobbat!'),
-          ...(await missionDoneFooter()),
-        );
-      } else {
-        showIntro();
-      }
+      // An unfinished session (also a redo) is resumed; otherwise a done mission shows the result.
+      const unfinished = progress?.session && !fc.isFinished(progress.session);
+      if (saved.status === missions.STATUS.DONE && !unfinished) showDone();
+      else showIntro();
 
       return {
         title: exam.title,

@@ -53,8 +53,9 @@ Varje glosförhör eller prov är en egen fil, till exempel `exam-english-w50.js
 | `front` / `back` | Kortets två sidor. `lang` är `"en"` för engelska och `"sv"` för svenska (styr uttal och uppläsning). |
 | `answerMode` | Hur barnet svarar, se nedan. Gäller hela provet. |
 | `cards` | Ett kort per rad. `front` och `back` är de två sidorna. |
+| `session` | `"all"` (standard): varje pass går igenom alla kort åt båda hållen, sedan är det klart. `"due"`: appen väljer de kort som behöver övas, högst 20 per pass (används för biologin). |
 
-Barnet övar åt båda hållen: engelska → svenska och svenska → engelska. Ett kort med `"directions": ["forward"]` övas bara från framsidan till baksidan.
+Kort som blir fel kommer tillbaka senare i samma pass, högst 3 gånger. Barnet övar åt båda hållen: engelska → svenska och svenska → engelska. Ett kort med `"directions": ["forward"]` övas bara från framsidan till baksidan.
 
 ## Svarslägen
 

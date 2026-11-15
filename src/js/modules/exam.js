@@ -54,7 +54,12 @@ async function saveDeck(exam, deck) {
   await storage.set(deckKey(exam.id), deck);
 }
 
+/**
+ * "session": "all" (default) practises every card in every direction each time.
+ * "session": "due" lets Leitner pick what is due, up to MAX_ITEMS (plus `perSession`).
+ */
 function planSession(exam, deck, today) {
+  if ((exam.session ?? 'all') === 'all') return fc.pickAll(deck, { today });
   const days = daysUntil(today, exam.examDate);
   // "perSession" in `kinds` gives that kind a fixed number of items on top of the others.
   const quota = Object.fromEntries(Object.entries(exam.kinds ?? {})
@@ -79,6 +84,12 @@ export function withKindDefaults(exam) {
   return { ...exam, cards: exam.cards.map((card) => ({ ...exam.kinds[card.kind], ...card })) };
 }
 
+/** How many items a full session has, for the time estimate. */
+function sessionSize(exam) {
+  if ((exam.session ?? 'all') === 'all') return Object.keys(fc.syncDeck(null, exam.cards).items).length;
+  return MAX_ITEMS + extraPerSession(exam);
+}
+
 function getMissions(rawExam, ctx) {
   const exam = withKindDefaults(rawExam);
   const days = daysUntil(ctx.today, exam.examDate);
@@ -90,7 +101,7 @@ function getMissions(rawExam, ctx) {
     title: exam.title,
     subject: exam.subject,
     summary: daysLeftText(days),
-    estimatedMinutes: minutesFor(MAX_ITEMS + extraPerSession(exam)),
+    estimatedMinutes: minutesFor(sessionSize(exam)),
     placeholder: Boolean(exam.placeholder),
     today: ctx.today,
     exam,

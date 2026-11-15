@@ -7,7 +7,8 @@
   "examDate": "2026-11-19",
   "front": { "label": "Fråga", "lang": "sv" },
   "back": { "label": "Svar", "lang": "sv" },
-  "answerMode": "self",
+  "answerMode": "choice",
+  "session": "due",
   "kinds": {
     "question": { "directions": ["forward"] },
     "term": { "frontLabel": "Begrepp", "backLabel": "Förklaring", "perSession": 5 }

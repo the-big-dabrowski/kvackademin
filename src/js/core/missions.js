@@ -52,10 +52,14 @@ export async function start(mission) {
   return saveState(mission.id, { status: STATUS.IN_PROGRESS });
 }
 
-/** Autosave after every answer. `progress` is the module's own resume state. */
+/**
+ * Autosave after every answer. `progress` is the module's own resume state.
+ * A mission that is already done stays done, e.g. when the learner does it again.
+ */
 export async function saveProgress(mission, progress, meta = {}) {
   await logEvent({ missionId: mission.id, type: mission.type, event: EVENTS.PROGRESS, meta });
-  return saveState(mission.id, { status: STATUS.IN_PROGRESS, progress });
+  const { status } = await getState(mission.id);
+  return saveState(mission.id, { status: status === STATUS.DONE ? STATUS.DONE : STATUS.IN_PROGRESS, progress });
 }
 
 export async function complete(mission, meta = {}) {

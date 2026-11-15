@@ -76,6 +76,21 @@ test('pickSession quota adds a fixed number of one group on top of maxItems', ()
   assert.equal(mixed.filter((k) => k.startsWith('t')).length, 5);
 });
 
+test('pickAll takes every item once', () => {
+  const deck = fc.syncDeck({}, cards);
+  const keys = fc.pickAll(deck, { today });
+  assert.deepEqual([...keys].sort(), Object.keys(deck.items).sort());
+});
+
+test('remainingCount includes retries and firstTryCount skips missed items', () => {
+  let session = fc.createSession(['a:forward', 'b:forward', 'c:forward']);
+  ({ session } = fc.advanceSession(session, false)); // a wrong, comes back
+  ({ session } = fc.advanceSession(session, true));
+  assert.equal(fc.remainingCount(session), 2);
+  while (!fc.isFinished(session)) ({ session } = fc.advanceSession(session, true));
+  assert.equal(fc.firstTryCount(session), 2);
+});
+
 test('pickSession gives a light review when nothing is due', () => {
   let deck = fc.syncDeck({}, cards);
   for (const key of Object.keys(deck.items)) deck = fc.applyAnswer(deck, key, true, today);
