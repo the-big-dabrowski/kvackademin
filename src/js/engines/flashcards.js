@@ -69,20 +69,47 @@ export function isDue(entry, today, examSoon = false) {
 function spreadOut(keys) {
   const rest = [...keys];
   const result = [];
+  const left = (cardId) => rest.filter((k) => parseItemKey(k).cardId === cardId).length;
   while (rest.length) {
     const prev = result.length ? parseItemKey(result[result.length - 1]).cardId : null;
-    const i = rest.findIndex((k) => parseItemKey(k).cardId !== prev);
-    result.push(...rest.splice(i === -1 ? 0 : i, 1));
+    // Take the card with most items left first, so two of the same card are not left for the end.
+    let best = -1;
+    rest.forEach((k, i) => {
+      const id = parseItemKey(k).cardId;
+      if (id !== prev && (best === -1 || left(id) > left(parseItemKey(rest[best]).cardId))) best = i;
+    });
+    result.push(...rest.splice(best === -1 ? 0 : best, 1));
+  }
+  return result;
+}
+
+/**
+ * Shuffle with a seed, so the same day always gives the same order.
+ * Mixes kinds and sections instead of following the order in the file.
+ */
+function seededShuffle(list, seedText) {
+  let seed = 0;
+  for (const ch of seedText) seed = (Math.imul(seed, 31) + ch.codePointAt(0)) >>> 0;
+  const random = () => {
+    seed = (Math.imul(seed ^ (seed >>> 15), 2246822507) + 0x6d2b79f5) >>> 0;
+    return seed / 2 ** 32;
+  };
+  const result = [...list];
+  for (let i = result.length - 1; i > 0; i -= 1) {
+    const j = Math.floor(random() * (i + 1));
+    [result[i], result[j]] = [result[j], result[i]];
   }
   return result;
 }
 
 /**
  * Pick today's items: lowest box first, unseen before oldest seen.
+ * Items that are equal on that are mixed (same mix all day).
  * If nothing is due, return a short light review of the weakest items.
  */
 export function pickSession(deck, { today, maxItems, examSoon = false }) {
-  const entries = Object.entries(deck.items);
+  // Array.prototype.sort is stable, so the shuffled order is kept between equal items.
+  const entries = seededShuffle(Object.entries(deck.items), today);
   const order = (a, b) => a[1].box - b[1].box || (a[1].lastSeen ?? '').localeCompare(b[1].lastSeen ?? '');
   const due = entries.filter(([, e]) => isDue(e, today, examSoon)).sort(order);
   const pool = due.length ? due.slice(0, maxItems) : [...entries].sort(order).slice(0, REVIEW_SIZE);

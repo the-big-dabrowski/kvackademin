@@ -51,6 +51,15 @@ test('pickSession respects maxItems, puts low boxes first and spreads directions
   }
 });
 
+test('pickSession mixes the order but keeps it the same all day', () => {
+  const many = Array.from({ length: 20 }, (_, i) => ({ id: `c${String(i).padStart(2, '0')}`, directions: ['forward'] }));
+  const deck = fc.syncDeck({}, many);
+  const first = fc.pickSession(deck, { today, maxItems: 20 });
+  assert.deepEqual(fc.pickSession(deck, { today, maxItems: 20 }), first);
+  assert.notDeepEqual(first, Object.keys(deck.items));
+  assert.equal(new Set(first).size, 20);
+});
+
 test('pickSession gives a light review when nothing is due', () => {
   let deck = fc.syncDeck({}, cards);
   for (const key of Object.keys(deck.items)) deck = fc.applyAnswer(deck, key, true, today);

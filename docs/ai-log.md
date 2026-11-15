@@ -311,3 +311,19 @@ Efter första körningen: att få ut barnets svar krävde antingen flera steg i 
 - Provdatum.
 - Om avsnitt och tips ska visas, och om barnet ska kunna välja avsnitt.
 - Ordningen: första dagarna kommer mest frågor, eftersom korten tas i filens ordning. Ska frågor och begrepp blandas?
+
+## Blandad ordning och provdatum för biologi (2026-11-15)
+
+### Vad som gjordes
+- **Blandad ordning:** `pickSession` blandar korten innan de sorteras efter låda och senast sedd. Ordningen följer alltså inte längre filen, och frågor, begrepp och avsnitt blandas. Blandningen utgår från dagens datum, så den är densamma hela dagen. Det gäller alla prov, även glosorna.
+- `spreadOut` väljer nu först det kort som har flest övningar kvar. Då hamnar inte båda riktningarna av samma kort direkt efter varandra i slutet, vilket kunde hända med blandad ordning.
+- Biologi: `examDate` är `2026-11-19`. Från den 17:e är alla kort som inte övats samma dag aktuella (två dagar före provet, som tidigare).
+
+### Kontrollerat
+`npm test` (24 gröna, nytt test för blandningen). I webbläsaren: "Provet är om 4 dagar". Den 15:e innehåller passet 3 frågor och 17 begrepp, den 16:e 5 frågor och 15 begrepp.
+
+### Alternativ
+- Varva frågor och begrepp i jämn takt (1 fråga på 2 begrepp). Mer förutsägbart men kräver att motorn känner till `kind`. Valdes bort för att hålla motorn enkel.
+
+### Kvar för dig att avgöra
+- Om frågorna ska prioriteras före provet. Just nu är andelen slumpmässig och följer antalet kort: 22 av 70 övningar är frågor.

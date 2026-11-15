@@ -4,7 +4,7 @@
   "id": "biologi-den-levande-planeten",
   "subject": "Biologi",
   "title": "Den levande planeten",
-  "examDate": null,
+  "examDate": "2026-11-19",
   "front": { "label": "Fråga", "lang": "sv" },
   "back": { "label": "Svar", "lang": "sv" },
   "answerMode": "self",
